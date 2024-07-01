@@ -1,7 +1,7 @@
 import { Image, ScrollView, Text, View } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { Link } from 'expo-router'
+import { Redirect,router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../constants'
 import CustomButton from '../components/CustomButton'
@@ -20,7 +20,7 @@ const App = () => {
                     <View className="relative mt-5">
                         <Text className="text-3xl text-white font-bold text-center">
                             Discover Endless{"\n"}
-                            Possibilities with Aora{" "}
+                            Possibilities with {" "}
                             <Text className="text-secondary-200">Aora</Text>
                         </Text>
 
@@ -37,7 +37,7 @@ const App = () => {
 
                     <CustomButton 
                     title="Continue With Email"
-                    handlePress={()=>{}}
+                    handlePress={()=>router.push('/sign-in')}
                     containerStyles="w-full mt-7"
                     />
                 </View>
