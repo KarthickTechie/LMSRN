@@ -42,7 +42,7 @@ const SignIn = () => {
             resizeMode='contain'
             className="w-[115px] h-[35px] mx-auto"
             />
-            <Text className="text-white text-2xl text-center font-psemibold text-semibold">Login To Aora</Text>
+            <Text className="text-white text-2xl text-center font-psemibold text-semibold">Login To Lorum</Text>
         </View>
         <View className="px-4">
         <FormField 

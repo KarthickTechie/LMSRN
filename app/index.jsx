@@ -38,7 +38,7 @@ const App = () => {
                     </View>
                     <Text className="text-sm text-gray-100 text-pregular text-center mt-10">
                         Where creativity meets innovation: embark on a journey of limitless exploration 
-                        with Aora
+                        with Lorum
                     </Text>
 
                     <CustomButton 
