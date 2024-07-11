@@ -10,7 +10,7 @@ import { useGlobalContext } from '../context/GlobalProvider'
 const App = () => {
     const {isLoading,isLoggedIn} = useGlobalContext()
 
-    if(!isLoading && isLoggedIn) return (<Redirect href="/home"/>)
+    // if(!isLoading && isLoggedIn) return (<Redirect href="/home"/>)
 
     return (
         <SafeAreaView className="bg-primary h-full">
@@ -43,11 +43,11 @@ const App = () => {
 
                     <CustomButton 
                     title="Continue With Email"
-                    handlePress={()=>router.push('/sign-in')}
+                    handlePress={()=>router.push('master')}
                     containerStyles="w-full mt-7"
                     />
                 </View>
-                <StatusBar style='light' />
+                <StatusBar backgroundColor='#D4E7FF' style='dark' />
             </ScrollView>
         </SafeAreaView>
     )

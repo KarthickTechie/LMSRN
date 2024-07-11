@@ -7,10 +7,11 @@ import CustomButton from '../../components/CustomButton'
 import { Link,router } from 'expo-router'
 import { signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
+import { User } from '@/apptypes'
 
 const SignIn = () => {
   const{setUser,setIsLoggedIn}=useGlobalContext()
-  const[form,setForm] = useState({email:'',password:''})
+  const[form,setForm] = useState<User>({email:'',password:''})
   const [isSubmitting,setIsSubmitting] = useState(false)
   const submit = async ()=>{
     const {email,password} = form
@@ -27,30 +28,41 @@ const SignIn = () => {
         router.replace('/home')
       
 
-    }catch(error){
+    }catch(error:any){
         Alert.alert('Error',error.message)
     }finally{
       setIsSubmitting(false)
     }
   }
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView>
-        <View className="flex-1 w-full h-full px-4 my-6 justify-center">
-            <Image 
-            source={images.logo}
-            resizeMode='contain'
-            className="w-[115px] h-[35px] mx-auto"
-            />
-            <Text className="text-white text-2xl text-center font-psemibold text-semibold">Login To Lorum</Text>
+       <View>
+        
+    
+        <View>
+       
+          <Image 
+          source={images.callcenterbanner}
+          resizeMode='contain'
+          className='top-[-100]'
+          />
         </View>
-        <View className="px-4">
+        <View className="px-4 top-[-50vh] bg-[#fff] mx-3 opacity-[0.8]  
+        rounded-xl border border-teal-400	shadow shadow-{50}">
+          <View className='flex-1 w-full h-[60px] justify-center items-center	'>
+       <Image 
+       source={images.banklogo}
+       resizeMode='contain'
+       className='w-[100px] top-[10px]'
+       />
+       </View>
         <FormField 
         title="UserName"
         otherStyle="mt-5"
         value={form.email}
-        handleChangeText={(e)=>setForm({...form,email:e})}
-        placeholder="Enter Email"
+        handleChangeText={(e:string)=>setForm({...form,email:e})}
+        placeholder="Enter User Name"
         keyBoardType="email-address"
         />
         <FormField 
@@ -58,21 +70,24 @@ const SignIn = () => {
         otherStyle="mt-5"
         value={form.password}
         placeholder="Enter Password"
-        handleChangeText={(e)=>setForm({...form,password:e})}
+        handleChangeText={(e:string)=>setForm({...form,password:e})}
         keyBoardType="password"
 
         />
         <CustomButton 
+        textStyles=""
         title="Submit"
         containerStyles="mt-5"
         handlePress={submit}
         isLoading={isSubmitting}
         />
+        
         <View className="flex-row justify-center pt-10 gap-2">
         <Text className="text-lg text-gray-100 font-pregular">Don't you have account ?</Text>
         <Link href="/sign-up" className="text-lg text-secondary font-psemibold">Sign Up</Link>
         </View>
         </View>
+        </View> 
       </ScrollView>
     </SafeAreaView>
   )
