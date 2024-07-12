@@ -27,7 +27,13 @@ module.exports = {
         },
         green:{
           DEFAULT:"#61E1B6",
-          
+
+        },
+        purple:{
+          DEFAULT:"#D36CC5"
+        },
+        yellow:{
+          DEFAULT:"#FFEE50"
         }
       },
       fontFamily: {
