@@ -18,6 +18,17 @@ module.exports = {
         gray: {
           100: "#CDCDE0",
         },
+        orange:{
+          DEFAULT: "#FCCB41",
+        },
+        navy:{
+          DEFAULT:"#01609C",
+          100:"#D4E7FF"
+        },
+        green:{
+          DEFAULT:"#61E1B6",
+          
+        }
       },
       fontFamily: {
         pthin: ["Poppins-Thin", "sans-serif"],

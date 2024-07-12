@@ -12,7 +12,7 @@ export type MasterCardViewProps = {
     status:boolean;
     index:number;
   };
-  
+   
 const MasterCard = ({title,opacity,classProps,status,index}:MasterCardViewProps) => {
     const opacAnimation = useRef(new Animated.Value(0)).current
     const trxAnimation = useRef(new Animated.Value(0)).current

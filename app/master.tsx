@@ -4,18 +4,28 @@ import CustomButton from '@/components/CustomButton';
 import { Master,StaticMasterData } from '@/apptypes';
 import MasterCard from '@/components/MasterCard';
 import { FontAwesome } from '@expo/vector-icons';
+import { router } from 'expo-router';
 const MasterPage = () => {
 
   const opacAnimation = useRef(new Animated.Value(0)).current
   
 
   const loadData = ()=>{
-    const res = mastersNotDownloaded.splice(0,1)
-    setMasterDownloaded([...mastersDownloaded,res[0]])
-    setMasterNotDownloaded([...mastersNotDownloaded])
-    if(mastersNotDownloaded.length == 0){
-      Animated.timing(opacAnimation,{toValue:1,useNativeDriver:true,duration:2000,delay:1000}).start()
-    }
+    console.log(`${mastersDownloaded.length} ${StaticMasterData.length} `)
+      if(mastersNotDownloaded.length > 0){
+
+        const res = mastersNotDownloaded.splice(0,1)
+        setMasterDownloaded([...mastersDownloaded,res[0]])
+        setMasterNotDownloaded([...mastersNotDownloaded])
+        if(mastersNotDownloaded.length == 0){
+          Animated.timing(opacAnimation,{toValue:1,useNativeDriver:true,duration:2000,delay:1000}).start()
+          setTimeout(()=>{
+            router.push('/home')
+          },2000)
+        }
+      }
+    
+   
   }
   const masterData:Master[] = StaticMasterData
 
