@@ -78,7 +78,8 @@ const App = () => {
 
                     <CustomButton 
                     title="Login with ZOHO"
-                    handlePress={ ()=>promptAsync()}
+                    // handlePress={ ()=>promptAsync()}
+                    handlePress={handleRoute}
                     containerStyles="w-full mt-7"
                     />
                 </View>
