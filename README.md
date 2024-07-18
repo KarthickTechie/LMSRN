@@ -16,3 +16,14 @@ npx expo start
 ---- app using appwrite for backend service -----
 
 follow along the video tutorial and create your own app in appwright
+
+
+## Zoho SSO Details
+
+## Sample OAUTH Request 
+
+https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.users.ALL&client_id=1000.C7UKU7KZQY7OQ3IZGALX852U4C18EL&response_type=code&access_type=offline&redirect_uri=http://localhost
+
+
+https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.users.ALL&client_id=1000.Q4PIUMENPBBERXN1CC0G8RZSIF9RBS&response_type=code&access_type=offline&redirect_uri=com.sysarc.lms://
+
