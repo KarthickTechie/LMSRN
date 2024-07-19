@@ -34,6 +34,9 @@ module.exports = {
         },
         yellow:{
           DEFAULT:"#FFEE50"
+        },
+        error:{
+          DEFAULT:"#de3730"
         }
       },
       fontFamily: {

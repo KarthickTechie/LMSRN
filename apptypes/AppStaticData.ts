@@ -9,3 +9,17 @@ export const StaticMasterData:Master[] = [
 
 ]
 
+export const SourcingFormInitialData = { 
+    sourcingid: '', 
+    preferredbranch: '', 
+    businessdescription: '', 
+    sourcingchannel: '' ,
+    sourcingname:'',
+    branchcode:'',
+    leadby:'',
+    leadid:'',
+    customername:'',
+    dob:'',
+    mobileno:'',
+    productinterested:''
+}

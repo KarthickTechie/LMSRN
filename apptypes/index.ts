@@ -1,4 +1,4 @@
 import { Master, User} from "./AppTypes";
-import { StaticMasterData } from "./AppStaticData";
+import { SourcingFormInitialData, StaticMasterData } from "./AppStaticData";
 
-export  {Master,User,StaticMasterData}
+export  {Master,User,StaticMasterData,SourcingFormInitialData}

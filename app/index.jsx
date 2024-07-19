@@ -62,7 +62,7 @@ const App = () => {
                         <Text className="text-3xl text-white font-bold text-center">
                             Discover Endless{"\n"}
                             Possibilities with {" "}
-                            <Text className="text-secondary-200">UNNATI</Text>
+                            <Text className="text-secondary-200">UCO LMS</Text>
                         </Text>
 
                         <Image
@@ -77,7 +77,7 @@ const App = () => {
                     </Text>
 
                     <CustomButton 
-                    title="Login with ZOHO"
+                    title="Login Now"
                     // handlePress={ ()=>promptAsync()}
                     handlePress={handleRoute}
                     containerStyles="w-full mt-7"

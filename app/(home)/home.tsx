@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { DrawerActions } from '@react-navigation/native'
-import { useNavigation } from 'expo-router'
+import { router, useNavigation } from 'expo-router'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import SubHeader from '@/components/subheader'
 import BannerTopComponent from '@/components/BannerTop'
@@ -27,7 +27,7 @@ const navigation = useNavigation()
         flex justify-center items-center
         shadow
         bg-orange rounded-full w-[40px] h-[40px] '>
-        <TouchableOpacity className=''>
+        <TouchableOpacity className='' onPress={()=>router.push('(leadtabs)/sourcing')}>
         <Ionicons name="add" size={24} color="black" />          
         </TouchableOpacity>
 

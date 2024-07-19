@@ -2,7 +2,7 @@ import { View, Text, Image,Alert } from 'react-native'
 import React from 'react'
 import { GestureHandlerRootView} from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import CustomDrawer from '@/components/CustomDrawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -84,6 +84,16 @@ const HomeLayout = () => {
             drawerLabel: 'AuditLogs',
             title: 'AuditLogs',
             drawerIcon:({size,color})=> <Ionicons name="clipboard-outline" size={size} color={color}/>
+
+          }}
+        />
+
+<Drawer.Screen
+          name="(leadtabs)" // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: 'New Lead',
+            title: 'New Lead',
+            drawerIcon:({size,color})=> <MaterialIcons name="create-new-folder" size={size} color={color} />
 
           }}
         />
