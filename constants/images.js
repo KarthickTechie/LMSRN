@@ -9,6 +9,15 @@ import callcenterbanner from "../assets/images/callcenter-banner.png";
 import lendperfectlogo from "../assets/images/lp-logo.png";
 import banklogo from "../assets/images/uco-logo.png";
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty ,callcenterbanner,
-    lendperfectlogo,banklogo
+export default {
+  profile,
+  thumbnail,
+  cards,
+  path,
+  logo,
+  logoSmall,
+  empty,
+  callcenterbanner,
+  lendperfectlogo,
+  banklogo,
 };

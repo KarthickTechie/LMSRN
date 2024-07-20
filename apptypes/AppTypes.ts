@@ -1,10 +1,9 @@
-export interface User{
-    email:string;
-    password:string;
+export interface User {
+  email: string;
+  password: string;
 }
 
-export interface Master{
-    masterType:string;
-    downloadStatus:boolean;
+export interface Master {
+  masterType: string;
+  downloadStatus: boolean;
 }
-

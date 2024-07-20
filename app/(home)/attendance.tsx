@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
 const Attendance = () => {
   return (
     <View>
       <Text>Attendance</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Attendance
+export default Attendance;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

@@ -18,26 +18,25 @@ module.exports = {
         gray: {
           100: "#CDCDE0",
         },
-        orange:{
+        orange: {
           DEFAULT: "#FCCB41",
         },
-        navy:{
-          DEFAULT:"#01609C",
-          100:"#D4E7FF"
+        navy: {
+          DEFAULT: "#01609C",
+          100: "#D4E7FF",
         },
-        green:{
-          DEFAULT:"#61E1B6",
-
+        green: {
+          DEFAULT: "#61E1B6",
         },
-        purple:{
-          DEFAULT:"#D36CC5"
+        purple: {
+          DEFAULT: "#D36CC5",
         },
-        yellow:{
-          DEFAULT:"#FFEE50"
+        yellow: {
+          DEFAULT: "#FFEE50",
         },
-        error:{
-          DEFAULT:"#de3730"
-        }
+        error: {
+          DEFAULT: "#de3730",
+        },
       },
       fontFamily: {
         pthin: ["Poppins-Thin", "sans-serif"],
@@ -53,5 +52,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
-
+};

@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
 const scheduler = () => {
   return (
     <View>
       <Text>scheduler</Text>
     </View>
-  )
-}
+  );
+};
 
-export default scheduler
+export default scheduler;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
