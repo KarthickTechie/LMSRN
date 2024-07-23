@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../constants";
+import { DBSchemaConstants, images } from "../constants";
 import CustomButton from "../components/CustomButton";
 import { useGlobalContext } from "../context/GlobalProvider";
 import * as WebBrowser from "expo-web-browser";
@@ -20,9 +20,8 @@ const discovery = {
 };
 
 const App = () => {
-  const { db, usersList } = useDBUtils();
-
-  console.log(usersList);
+  const { db, usersList, getTotalRowsByTableName } = useDBUtils();
+  if (db) getTotalRowsByTableName(db, DBSchemaConstants.ORIG_ZONAL_MASTER);
   /*
 
 Code for Zoho SSO login - required for SSO Requirement

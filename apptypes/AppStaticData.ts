@@ -1,4 +1,4 @@
-import { Master } from "./AppTypes";
+import { KeyValueString, Master } from "./AppTypes";
 
 export const StaticMasterData: Master[] = [
   { masterType: "Zonal Masters", downloadStatus: false },
@@ -21,4 +21,24 @@ export const SourcingFormInitialData = {
   dob: "",
   mobileno: "",
   productinterested: "",
+};
+
+export const OrganizationMasterColumns: KeyValueString = {
+  orgCode: "TEXT",
+  orgId: "TEXT",
+  orgLevel: "TEXT",
+  orgName: "TEXT",
+  orgScode: "TEXT",
+};
+
+export const ProductMasterColumns: KeyValueString = {
+  prdSeqId: "TEXT",
+  prdCode: "TEXT",
+  prdDesc: "TEXT",
+};
+
+export const SubProductColumns: KeyValueString = {
+  rdValueCode: "TEXT",
+  rdValueDescription: "TEXT",
+  loanProd: "TEXT",
 };

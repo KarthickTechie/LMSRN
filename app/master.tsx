@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import { useFetch } from "@/hooks/useFetch";
 import { Endpoints } from "@/constants";
 
+// eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
   // fetch all masters
   /* static header value for lms app  */

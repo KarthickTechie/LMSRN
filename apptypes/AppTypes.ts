@@ -18,3 +18,12 @@ export interface TestUser {
   name: string;
   age: number;
 }
+
+export interface KeyValueString {
+  [key: string]: string;
+}
+export interface TableConfig {
+  tableName: string;
+  pk: string;
+  tableData: KeyValueString;
+}
