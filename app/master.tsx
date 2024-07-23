@@ -1,11 +1,31 @@
 import { View, Text, Animated } from "react-native";
 import React, { useRef, useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { Master, StaticMasterData } from "@/apptypes";
+import { HeaderParams, Master, StaticMasterData } from "@/apptypes";
 import MasterCard from "@/components/MasterCard";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useFetch } from "@/hooks/useFetch";
+import { Endpoints } from "@/constants";
+
 const MasterPage = () => {
+  // fetch all masters
+  /* static header value for lms app  */
+  const headers: HeaderParams = {
+    username: "60011",
+    password: "516edd40eedbe8194bc0e743fe75c59b",
+  };
+  const { data, error, loading, refetch } = useFetch(
+    Endpoints.zonalmaster,
+    headers
+  );
+
+  if (!error) {
+    console.log(data);
+  } else {
+    console.log(JSON.stringify(error));
+  }
+
   const opacAnimation = useRef(new Animated.Value(0)).current;
 
   const loadData = () => {
@@ -14,13 +34,14 @@ const MasterPage = () => {
       const res = mastersNotDownloaded.splice(0, 1);
       setMasterDownloaded([...mastersDownloaded, res[0]]);
       setMasterNotDownloaded([...mastersNotDownloaded]);
-      if (mastersNotDownloaded.length == 0) {
+      if (mastersNotDownloaded.length === 0) {
         Animated.timing(opacAnimation, {
           toValue: 1,
           useNativeDriver: true,
           duration: 2000,
           delay: 1000,
         }).start();
+
         setTimeout(() => {
           router.push("/home");
         }, 2000);

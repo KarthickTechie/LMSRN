@@ -3,6 +3,6 @@ module.exports = {
   extends: ["expo", "prettier"],
   plugins: ["prettier"],
   rules: {
-    "prettier/prettier": "error",
+    "max-lines-per-function": ["error", 150],
   },
 };

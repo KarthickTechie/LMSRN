@@ -1,11 +1,4 @@
-import {
-  Button,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Button, KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import React from "react";
 import { Formik, FormikValues } from "formik";
 import { Styledtextinput, StyledDropdown } from "@/components/formcontrols";
@@ -120,6 +113,7 @@ const SourcingPage = () => {
                   formikProps={formikProps}
                   formikkey="productinterested"
                 />
+                {/*  */}
                 <Button title="Submit" onPress={formikProps.handleSubmit} />
               </>
             )}
@@ -131,5 +125,3 @@ const SourcingPage = () => {
 };
 
 export default SourcingPage;
-
-const styles = StyleSheet.create({});

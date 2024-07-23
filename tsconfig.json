@@ -3,15 +3,15 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "components/CustomButton.jsx"  ]
+    "expo-env.d.ts",
+    "components/CustomButton.jsx",
+    "app/index.tsx"
+  ]
 }

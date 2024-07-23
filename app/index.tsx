@@ -1,5 +1,5 @@
 import { Image, ScrollView, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +8,8 @@ import CustomButton from "../components/CustomButton";
 import { useGlobalContext } from "../context/GlobalProvider";
 import * as WebBrowser from "expo-web-browser";
 import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
-
+import { useDBUtils } from "../hooks/useDBUtils";
+import { TestUser } from "@/apptypes";
 WebBrowser.maybeCompleteAuthSession();
 
 // zoho oauth endpoint
@@ -19,7 +20,17 @@ const discovery = {
 };
 
 const App = () => {
-  const { isLoading, isLoggedIn } = useGlobalContext();
+  const { db, usersList } = useDBUtils();
+
+  console.log(usersList);
+  /*
+
+Code for Zoho SSO login - required for SSO Requirement
+lms app does not have SSO , refer for SSO requirement
+/*
+
+
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: "1000.Q4PIUMENPBBERXN1CC0G8RZSIF9RBS",
@@ -28,7 +39,7 @@ const App = () => {
         scheme: "com.sysarc.lms",
       }),
     },
-    discovery,
+    discovery
   );
 
   React.useEffect(() => {
@@ -37,10 +48,16 @@ const App = () => {
     }
   }, [response]);
 
-  // if(!isLoading && isLoggedIn) return (<Redirect href="/home"/>)
+  */
+
+  /*
+  use this code for auto redirect based on a global state 
+  const { isLoading, isLoggedIn } = useGlobalContext();
+  if(!isLoading && isLoggedIn) return (<Redirect href="/home"/>)
+  */
 
   const handleRoute = () => {
-    router.push("master");
+    //router.push("master");
   };
 
   return (
@@ -78,6 +95,8 @@ const App = () => {
             // handlePress={ ()=>promptAsync()}
             handlePress={handleRoute}
             containerStyles="w-full mt-7"
+            textStyles={undefined}
+            isLoading={undefined}
           />
         </View>
         <StatusBar backgroundColor="#D4E7FF" style="dark" />
