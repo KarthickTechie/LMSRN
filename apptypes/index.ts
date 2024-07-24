@@ -10,6 +10,7 @@ import {
   OrganizationMasterColumns,
   ProductMasterColumns,
   SourcingFormInitialData,
+  StaticDataColumns,
   StaticMasterData,
   SubProductColumns,
 } from "./AppStaticData";
@@ -26,4 +27,5 @@ export {
   ProductMasterColumns,
   SubProductColumns,
   TableConfig,
+  StaticDataColumns,
 };

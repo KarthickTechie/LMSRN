@@ -6,5 +6,8 @@ const DBSchemaConstants = {
   ORIG_STATIC_DATA_MASTERS: "ORIG_STATIC_DATA_MASTERS",
   ZONE_ID: "ZONE_ID",
   BRANCH_ID: "BRANCH_ID",
+  LOV_ID:"LOV_ID",
+  STATE_ID:"STATE_ID",
+  CITY_ID:"CITY_ID",
 };
 export default DBSchemaConstants;

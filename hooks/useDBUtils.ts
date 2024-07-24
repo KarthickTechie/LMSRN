@@ -6,12 +6,14 @@
 
 import {
   KeyValueString,
+  StaticDataColumns,
   StaticMasterData,
   SubProductColumns,
   TableConfig,
   TestUser,
 } from "@/apptypes";
 import { OrganizationMasterColumns, ProductMasterColumns } from "@/apptypes";
+import { CityMasterColumns, StateMasterColumns } from "@/apptypes/AppStaticData";
 import { DBSchemaConstants } from "@/constants";
 import * as SQLite from "expo-sqlite";
 import { useEffect, useState } from "react";
@@ -47,6 +49,42 @@ export const useDBUtils = () => {
       });
 
       getTotalRowsByTableName(db, DBSchemaConstants.ORIG_ZONAL_MASTER);
+
+      createTable(db, {
+        tableName: DBSchemaConstants.ORIG_BRANCH_MASTER,
+        pk: DBSchemaConstants.BRANCH_ID,
+        tableData: OrganizationMasterColumns,
+      });
+
+      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_BRANCH_MASTER);
+
+      createTable(db, {
+        tableName: DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
+        pk: DBSchemaConstants.LOV_ID,
+        tableData: StaticDataColumns,
+      });
+
+      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_STATIC_DATA_MASTERS);
+
+       createTable(db, {
+        tableName: DBSchemaConstants.ORIG_STATE_MASTERS,
+        pk: DBSchemaConstants.STATE_ID,
+        tableData: StateMasterColumns,
+      });
+
+      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_STATE_MASTERS);
+
+
+       createTable(db, {
+        tableName: DBSchemaConstants.ORIG_CITY_MASTERS,
+        pk: DBSchemaConstants.CITY_ID,
+        tableData: CityMasterColumns,
+      });
+
+      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_CITY_MASTERS);
+
+
+
     }
     return () => {
       db?.closeAsync();

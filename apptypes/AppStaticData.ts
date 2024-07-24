@@ -42,3 +42,20 @@ export const SubProductColumns: KeyValueString = {
   rdValueDescription: "TEXT",
   loanProd: "TEXT",
 };
+
+export const StaticDataColumns: KeyValueString = {
+  rdValueCode: "TEXT",
+  rdValueDescription: "TEXT",
+  master_id: "INTEGER NOT NULL DEFAULT ''",
+};
+
+export const StateMasterColumns:KeyValueString = {
+  sgmStateName: 'TEXT',
+  sgmStateCode: 'TEXT',
+};
+
+export const CityMasterColumns:KeyValueString = {
+  sgmCityCode: 'TEXT',
+  sgmCityName: 'TEXT',
+  sgmStateCode: 'TEXT',
+};
