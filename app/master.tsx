@@ -1,16 +1,25 @@
 import { View, Text, Animated } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { HeaderParams, Master, StaticMasterData } from "@/apptypes";
+import {
+  HeaderParams,
+  Master,
+  OrganizationMasterColumns,
+  StaticMasterData,
+} from "@/apptypes";
 import MasterCard from "@/components/MasterCard";
 import { FontAwesome } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useFetch } from "@/hooks/useFetch";
-import { Endpoints } from "@/constants";
+import { DBSchemaConstants, Endpoints } from "@/constants";
+import * as ZonalMasterDataSource from "@/services/dbopsZonalMasters";
+import { getColumns, prepareDB } from "@/services";
+import { useDBUtils } from "@/hooks/useDBUtils";
+import axios from "axios";
 
 // eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
-  // fetch all masters
+  const { updatemaster } = useLocalSearchParams<Record<string, string>>(); // fetch all masters
   /* static header value for lms app  */
   const headers: HeaderParams = {
     username: "60011",
@@ -21,11 +30,52 @@ const MasterPage = () => {
     headers
   );
 
-  if (!error) {
-    console.log(data);
-  } else {
-    console.log(JSON.stringify(error));
-  }
+  const getData = async () => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/organisationsetup/`,
+      method: "GET",
+    });
+  };
+  useEffect(() => {
+    alert(`${updatemaster} type => ${typeof updatemaster}`);
+
+    // if orig_zonal
+    // getData().then((response) => {
+    //   const data: Record<string, string | number | null>[] =
+    //     response.data["zonalList"];
+    //   data.forEach((val) => {
+    //     ZonalMasterDataSource.save(val);
+    //   });
+    // });
+    // if (!error) {
+    //   alert(data.length);
+    //   data.forEach(async (val, index) => {
+    //     if (index < 5) {
+    //       ZonalMasterDataSource.save(val);
+    //     }
+    //   });
+    // }
+  }, []);
+  // if (!error && db) {
+  //   ZonalMasterDataSource.findAll();
+  //   //console.log(data);
+  //   //console.info(getColumns(OrganizationMasterColumns));
+  //   // data.forEach(async (val, index) => {
+  //   //   if (index <= 5) {
+  //   //     save(db, val);
+  //   //   }
+  //   // });
+  //   // save({
+  //   //   orgCode: "1",
+  //   //   orgId: "1",
+  //   //   orgLevel: "R",
+  //   //   orgName: "Chennai",
+  //   //   orgScode: 1666,
+  //   // });
+  //   getTotalRowsByTableName(DBSchemaConstants.ORIG_ZONAL_MASTER);
+  // } else {
+  //   console.log(JSON.stringify(error));
+  // }
 
   const opacAnimation = useRef(new Animated.Value(0)).current;
 

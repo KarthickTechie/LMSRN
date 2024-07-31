@@ -21,7 +21,6 @@ const discovery = {
 
 const App = () => {
   const { db, usersList, getTotalRowsByTableName } = useDBUtils();
-  if (db) getTotalRowsByTableName(db, DBSchemaConstants.ORIG_ZONAL_MASTER);
   /*
 
 Code for Zoho SSO login - required for SSO Requirement
@@ -56,7 +55,7 @@ lms app does not have SSO , refer for SSO requirement
   */
 
   const handleRoute = () => {
-    //router.push("master");
+    router.push("master/?updatemaster=false");
   };
 
   return (

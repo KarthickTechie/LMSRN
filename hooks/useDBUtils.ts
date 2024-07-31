@@ -13,20 +13,24 @@ import {
   TestUser,
 } from "@/apptypes";
 import { OrganizationMasterColumns, ProductMasterColumns } from "@/apptypes";
-import { CityMasterColumns, StateMasterColumns } from "@/apptypes/AppStaticData";
+import {
+  CityMasterColumns,
+  StateMasterColumns,
+} from "@/apptypes/AppStaticData";
 import { DBSchemaConstants } from "@/constants";
+import { prepareDB } from "@/services";
 import * as SQLite from "expo-sqlite";
 import { useEffect, useState } from "react";
 
 export const useDBUtils = () => {
   const [db, setDb] = useState<SQLite.SQLiteDatabase>();
   const [usersList, setUsersList] = useState<TestUser[]>([]);
-  const testDBPrepare = async () => {
-    const db = await SQLite.openDatabaseAsync("lms.db");
+  const prepareSchema = async () => {
+    const db = await prepareDB();
     setDb(db);
   };
   useEffect(() => {
-    testDBPrepare();
+    prepareSchema();
     db?.withTransactionAsync(async () => {
       db.execAsync(
         `CREATE TABLE IF NOT EXISTS TestUsers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER);`
@@ -48,7 +52,7 @@ export const useDBUtils = () => {
         tableData: OrganizationMasterColumns,
       });
 
-      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_ZONAL_MASTER);
+      getTotalRowsByTableName(DBSchemaConstants.ORIG_ZONAL_MASTER);
 
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_BRANCH_MASTER,
@@ -56,7 +60,7 @@ export const useDBUtils = () => {
         tableData: OrganizationMasterColumns,
       });
 
-      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_BRANCH_MASTER);
+      getTotalRowsByTableName(DBSchemaConstants.ORIG_BRANCH_MASTER);
 
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
@@ -64,27 +68,23 @@ export const useDBUtils = () => {
         tableData: StaticDataColumns,
       });
 
-      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_STATIC_DATA_MASTERS);
+      getTotalRowsByTableName(DBSchemaConstants.ORIG_STATIC_DATA_MASTERS);
 
-       createTable(db, {
+      createTable(db, {
         tableName: DBSchemaConstants.ORIG_STATE_MASTERS,
         pk: DBSchemaConstants.STATE_ID,
         tableData: StateMasterColumns,
       });
 
-      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_STATE_MASTERS);
+      getTotalRowsByTableName(DBSchemaConstants.ORIG_STATE_MASTERS);
 
-
-       createTable(db, {
+      createTable(db, {
         tableName: DBSchemaConstants.ORIG_CITY_MASTERS,
         pk: DBSchemaConstants.CITY_ID,
         tableData: CityMasterColumns,
       });
 
-      getTotalRowsByTableName(db, DBSchemaConstants.ORIG_CITY_MASTERS);
-
-
-
+      getTotalRowsByTableName(DBSchemaConstants.ORIG_CITY_MASTERS);
     }
     return () => {
       db?.closeAsync();
@@ -145,12 +145,13 @@ export const useDBUtils = () => {
 
   */
 
-  const getTotalRowsByTableName = async (
-    db: SQLite.SQLiteDatabase,
-    tableName: string
-  ) => {
-    const result = await db.getFirstAsync(`SELECT COUNT(*) FROM ${tableName}`);
-    console.log(result);
+  const getTotalRowsByTableName = async (tableName: string) => {
+    if (db) {
+      const result = await db.getFirstAsync(
+        `SELECT COUNT(*) FROM ${tableName}`
+      );
+      console.log(`table ${tableName}: ${JSON.stringify(result)}`);
+    }
   };
 
   return { db, getAllUSers, usersList, getTotalRowsByTableName };

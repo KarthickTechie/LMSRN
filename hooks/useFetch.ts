@@ -3,17 +3,20 @@ import axios, { AxiosRequestConfig } from "axios";
 import { HeaderParams } from "@/apptypes";
 
 export const useFetch = (endpoint: string, headerParams: HeaderParams) => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<Record<string, string | number | null>[]>(
+    []
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const options: AxiosRequestConfig = {
-    // url: `http://192.168.0.140/${endpoint}`,
+    url: `https://onlineucolps.in:450/lendperfect/${endpoint}`,
+    //url: "../data/organizations.json",
     method: "GET",
-    // headers: {
-    //   "Content-Type": "application/json",
-    //   username: headerParams.username,
-    //   password: headerParams.password,
-    // },
+    headers: {
+      "Content-Type": "application/json",
+      username: headerParams.username,
+      password: headerParams.password,
+    },
   };
   const fetchData = async () => {
     setLoading(true);
