@@ -55,10 +55,7 @@ lms app does not have SSO , refer for SSO requirement
   */
 
   const handleRoute = () => {
-    getTotalRowsByTableName(DBSchemaConstants.PRODUCT_MAIN_CATEGORY);
-    getTotalRowsByTableName(DBSchemaConstants.PRODUCT_SUB_CATEGORY);
-
-    //router.push("master/?updatemaster=true");
+    router.push("master/?updatemaster=true");
   };
 
   return (

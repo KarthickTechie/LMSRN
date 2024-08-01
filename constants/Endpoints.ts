@@ -1,6 +1,6 @@
 const Endpoints = {
   zonalmaster: "organisationsetup/",
-  branchMaster: "get-all-branches/",
+  branchMaster: "organisationsetup/get-all-branches",
 };
 
 export default Endpoints;

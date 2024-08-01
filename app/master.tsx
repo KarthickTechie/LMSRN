@@ -21,32 +21,33 @@ import { ref } from "yup";
 const MasterPage = () => {
   const { updatemaster } = useLocalSearchParams<Record<string, string>>(); // fetch all masters
   /* static header value for lms app  */
+  const [zonelist, setZonalList] = useState([]);
+  const [branchList, setBranchList] = useState([]);
+
   const headers: HeaderParams = {
     username: "60011",
     password: "516edd40eedbe8194bc0e743fe75c59b",
   };
-  const { data, error, loading, refetch } = useFetch(
-    Endpoints.zonalmaster,
-    headers
-  );
 
   const getZonalData = async () => {
-    return await axios.request({
+    const response = await axios.request({
       url: `https://onlineucolps.in:450/lendperfect/organisationsetup/`,
       method: "GET",
     });
+    setZonalList(response.data.zonalList);
   };
 
   const getBranchData = async (loginid: string) => {
-    return await axios.request({
-      url: `https://onlineucolps.in:450/lendperfect/get-all-branches/${loginid}`,
+    const response = await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/${Endpoints.branchMaster}/${loginid}`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        username: headers.username,
+        userName: headers.username,
         password: headers.password,
       },
     });
+    setBranchList(response.data.branchList);
   };
 
   const getLovData = async (refkey: string) => {
@@ -87,11 +88,14 @@ const MasterPage = () => {
         DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
         DBSchemaConstants.PRODUCT_SUB_CATEGORY,
       ]);
-      console.log(data ? data.zonalList : error);
-
-      refetch(`${Endpoints.branchMaster}${headers.username}`);
-
-      console.log(data ? data.branchList : error);
+      try {
+        getZonalData();
+        getBranchData("60011");
+        console.log(zonelist.length);
+        console.log(branchList.length);
+      } catch (error) {
+        alert(`${error}`);
+      }
     } else {
       // if updatemaster query param false then no masterdata in tables
       // and fresh insert will happen

@@ -10,11 +10,10 @@ export const useFetch = (endpoint: string, headerParams: HeaderParams) => {
   const fetchData = async (endpoint = Endpoints.zonalmaster) => {
     const options: AxiosRequestConfig = {
       url: `https://onlineucolps.in:450/lendperfect/${endpoint}`,
-      //url: "../data/organizations.json",
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        username: headerParams.username,
+        userName: headerParams.username,
         password: headerParams.password,
       },
     };
