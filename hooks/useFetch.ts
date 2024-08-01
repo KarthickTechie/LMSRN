@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import { HeaderParams } from "@/apptypes";
+import { Endpoints } from "@/constants";
 
 export const useFetch = (endpoint: string, headerParams: HeaderParams) => {
-  const [data, setData] = useState<Record<string, string | number | null>[]>(
-    []
-  );
+  const [data, setData] = useState<Record<string, any>>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const options: AxiosRequestConfig = {
-    url: `https://onlineucolps.in:450/lendperfect/${endpoint}`,
-    //url: "../data/organizations.json",
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      username: headerParams.username,
-      password: headerParams.password,
-    },
-  };
-  const fetchData = async () => {
+  const fetchData = async (endpoint = Endpoints.zonalmaster) => {
+    const options: AxiosRequestConfig = {
+      url: `https://onlineucolps.in:450/lendperfect/${endpoint}`,
+      //url: "../data/organizations.json",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headerParams.username,
+        password: headerParams.password,
+      },
+    };
+
     setLoading(true);
     try {
       const response = await axios.request(options);
-      setData(response.data["zonalList"]);
+      setData(response.data);
       setLoading(false);
     } catch (error: any) {
       setError(error);
@@ -36,9 +36,9 @@ export const useFetch = (endpoint: string, headerParams: HeaderParams) => {
     fetchData();
   }, []);
 
-  const refetch = () => {
+  const refetch = (endpoint: string) => {
     setLoading(true);
-    fetchData();
+    fetchData(endpoint);
   };
 
   return { data, error, loading, refetch };

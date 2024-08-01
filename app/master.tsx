@@ -13,9 +13,9 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useFetch } from "@/hooks/useFetch";
 import { DBSchemaConstants, Endpoints } from "@/constants";
 import * as ZonalMasterDataSource from "@/services/dbopsZonalMasters";
-import { getColumns, prepareDB } from "@/services";
-import { useDBUtils } from "@/hooks/useDBUtils";
 import axios from "axios";
+import { deleteTableDataByTableNames } from "@/services";
+import { ref } from "yup";
 
 // eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
@@ -30,53 +30,81 @@ const MasterPage = () => {
     headers
   );
 
-  const getData = async () => {
+  const getZonalData = async () => {
     return await axios.request({
       url: `https://onlineucolps.in:450/lendperfect/organisationsetup/`,
       method: "GET",
     });
   };
+
+  const getBranchData = async (loginid: string) => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/get-all-branches/${loginid}`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headers.username,
+        password: headers.password,
+      },
+    });
+  };
+
+  const getLovData = async (refkey: string) => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/reference-data/${refkey}`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headers.username,
+        password: headers.password,
+      },
+    });
+  };
+
+  const getStatesData = async () => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/getStatesList/indian_states`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headers.username,
+        password: headers.password,
+      },
+    });
+  };
+
   useEffect(() => {
     alert(`${updatemaster} type => ${typeof updatemaster}`);
+    if (updatemaster) {
+      // if updatemaster query param true , all the masterdata in tables will be deleted
+      // and fresh insert will happen
+      deleteTableDataByTableNames([
+        DBSchemaConstants.ORIG_ZONAL_MASTER,
+        DBSchemaConstants.ORIG_BRANCH_MASTER,
+        DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
+        DBSchemaConstants.ORIG_STATE_MASTERS,
+        DBSchemaConstants.ORIG_CITY_MASTERS,
+        DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
+        DBSchemaConstants.PRODUCT_SUB_CATEGORY,
+      ]);
+      console.log(data ? data.zonalList : error);
 
+      refetch(`${Endpoints.branchMaster}${headers.username}`);
+
+      console.log(data ? data.branchList : error);
+    } else {
+      // if updatemaster query param false then no masterdata in tables
+      // and fresh insert will happen
+    }
     // if orig_zonal
-    // getData().then((response) => {
+    // getZonalData().then((response) => {
     //   const data: Record<string, string | number | null>[] =
     //     response.data["zonalList"];
     //   data.forEach((val) => {
     //     ZonalMasterDataSource.save(val);
     //   });
     // });
-    // if (!error) {
-    //   alert(data.length);
-    //   data.forEach(async (val, index) => {
-    //     if (index < 5) {
-    //       ZonalMasterDataSource.save(val);
-    //     }
-    //   });
-    // }
   }, []);
-  // if (!error && db) {
-  //   ZonalMasterDataSource.findAll();
-  //   //console.log(data);
-  //   //console.info(getColumns(OrganizationMasterColumns));
-  //   // data.forEach(async (val, index) => {
-  //   //   if (index <= 5) {
-  //   //     save(db, val);
-  //   //   }
-  //   // });
-  //   // save({
-  //   //   orgCode: "1",
-  //   //   orgId: "1",
-  //   //   orgLevel: "R",
-  //   //   orgName: "Chennai",
-  //   //   orgScode: 1666,
-  //   // });
-  //   getTotalRowsByTableName(DBSchemaConstants.ORIG_ZONAL_MASTER);
-  // } else {
-  //   console.log(JSON.stringify(error));
-  // }
-
   const opacAnimation = useRef(new Animated.Value(0)).current;
 
   const loadData = () => {

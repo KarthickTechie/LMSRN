@@ -1,4 +1,8 @@
 import { save } from "./dbopsZonalMasters";
-import { getColumns, prepareDB } from "./dbservices";
+import {
+  deleteTableDataByTableNames,
+  getColumns,
+  prepareDB,
+} from "./dbservices";
 
-export { prepareDB, getColumns, save };
+export { prepareDB, getColumns, save, deleteTableDataByTableNames };

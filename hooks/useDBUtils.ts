@@ -52,15 +52,11 @@ export const useDBUtils = () => {
         tableData: OrganizationMasterColumns,
       });
 
-      getTotalRowsByTableName(DBSchemaConstants.ORIG_ZONAL_MASTER);
-
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_BRANCH_MASTER,
         pk: DBSchemaConstants.BRANCH_ID,
         tableData: OrganizationMasterColumns,
       });
-
-      getTotalRowsByTableName(DBSchemaConstants.ORIG_BRANCH_MASTER);
 
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
@@ -68,15 +64,11 @@ export const useDBUtils = () => {
         tableData: StaticDataColumns,
       });
 
-      getTotalRowsByTableName(DBSchemaConstants.ORIG_STATIC_DATA_MASTERS);
-
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_STATE_MASTERS,
         pk: DBSchemaConstants.STATE_ID,
         tableData: StateMasterColumns,
       });
-
-      getTotalRowsByTableName(DBSchemaConstants.ORIG_STATE_MASTERS);
 
       createTable(db, {
         tableName: DBSchemaConstants.ORIG_CITY_MASTERS,
@@ -84,7 +76,21 @@ export const useDBUtils = () => {
         tableData: CityMasterColumns,
       });
 
-      getTotalRowsByTableName(DBSchemaConstants.ORIG_CITY_MASTERS);
+      createTable(db, {
+        tableName: DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
+        pk: DBSchemaConstants.PRODUCT_MAIN_ID,
+        tableData: ProductMasterColumns,
+      });
+
+      getTotalRowsByTableName(DBSchemaConstants.PRODUCT_MAIN_CATEGORY);
+
+      createTable(db, {
+        tableName: DBSchemaConstants.PRODUCT_SUB_CATEGORY,
+        pk: DBSchemaConstants.PRODUCT_SUB_ID,
+        tableData: ProductMasterColumns,
+      });
+
+      getTotalRowsByTableName(DBSchemaConstants.PRODUCT_SUB_CATEGORY);
     }
     return () => {
       db?.closeAsync();

@@ -32,9 +32,10 @@ export const OrganizationMasterColumns: KeyValueString = {
 };
 
 export const ProductMasterColumns: KeyValueString = {
-  prdSeqId: "TEXT",
-  prdCode: "TEXT",
-  prdDesc: "TEXT",
+  vertical: "TEXT",
+  facDesc: "TEXT",
+  facId: "TEXT",
+  facParentID: "TEXT",
 };
 
 export const SubProductColumns: KeyValueString = {
@@ -49,13 +50,13 @@ export const StaticDataColumns: KeyValueString = {
   master_id: "INTEGER NOT NULL DEFAULT ''",
 };
 
-export const StateMasterColumns:KeyValueString = {
-  sgmStateName: 'TEXT',
-  sgmStateCode: 'TEXT',
+export const StateMasterColumns: KeyValueString = {
+  sgmStateName: "TEXT",
+  sgmStateCode: "TEXT",
 };
 
-export const CityMasterColumns:KeyValueString = {
-  sgmCityCode: 'TEXT',
-  sgmCityName: 'TEXT',
-  sgmStateCode: 'TEXT',
+export const CityMasterColumns: KeyValueString = {
+  sgmCityCode: "TEXT",
+  sgmCityName: "TEXT",
+  sgmStateCode: "TEXT",
 };
