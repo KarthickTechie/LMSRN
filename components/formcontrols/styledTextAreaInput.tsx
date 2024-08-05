@@ -1,6 +1,6 @@
 import { View, Text, TextInput, TextInputProps } from "react-native";
 
-export type StyledtextinputProps = {
+export type StyledTextAreaInputProps = {
   formikProps: any;
   label: string;
   formikkey: string;
@@ -8,10 +8,9 @@ export type StyledtextinputProps = {
   fieldsGrpStyle?: string;
   fieldsAlignStyle?: string;
   labeledAlignStyle?: string;
-  editable?: boolean;
 };
 
-const Styledtextinput = ({
+const StyledTextAreaInput = ({
   formikProps,
   label,
   formikkey,
@@ -19,23 +18,23 @@ const Styledtextinput = ({
   fieldsGrpStyle,
   fieldsAlignStyle,
   labeledAlignStyle,
-  editable,
   ...rest
-}: TextInputProps & StyledtextinputProps) => {
+}: TextInputProps & StyledTextAreaInputProps) => {
   return (
     <View>
       <View className={`${fieldsGrpStyle ? fieldsGrpStyle + ' mb-1' : ''}`}>
-        <Text className={`text-navy text-sm pl-3 ${labeledAlignStyle ? labeledAlignStyle + ' pt-[10]' : 'w-full absolute pt-[-5]'}`}>
+        <Text className={`text-navy text-sm pl-3 ${labeledAlignStyle ? labeledAlignStyle + ' pt-[5]' : 'w-full absolute pt-[-5]'}`}>
           {label}
           {mandatory && <Text className="text-psemibold text-error"> *</Text>}
         </Text>
 
         <TextInput
-          className={`mt-2 ml-2 border-b border-gray-100 ${fieldsAlignStyle ? fieldsAlignStyle + ' px-2 py-1' : 'p-2'} ${editable == false ? 'text-gray-800 bg-gray-300' : 'text-black bg-transparent'}`}
+          numberOfLines={5}
+          multiline={true}
+          className={`mt-1 ml-2 border-b border-gray-100 ${fieldsAlignStyle ? fieldsAlignStyle + ' px-2 py-1' : 'p-2'}`}
           onChangeText={formikProps.handleChange(formikkey)}
           onBlur={formikProps.handleBlur(formikkey)}
           value={formikProps.values[formikkey]}
-          editable={editable}
           {...rest}
         />
       </View>
@@ -45,8 +44,7 @@ const Styledtextinput = ({
         </Text>
       </View>
     </View>
-
   );
 };
 
-export default Styledtextinput;
+export default StyledTextAreaInput;

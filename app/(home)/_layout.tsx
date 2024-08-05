@@ -18,7 +18,7 @@ const HomeLayout = () => {
           drawerLabelStyle: { marginLeft: -20 },
           headerShown: true,
           headerShadowVisible: false,
-          headerTitleStyle: { display: "none" },
+          headerTitleStyle: { display: "flex" },
           headerStyle: {
             backgroundColor: "white",
             height: top + 50,

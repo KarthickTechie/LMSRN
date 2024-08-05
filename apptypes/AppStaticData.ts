@@ -1,3 +1,4 @@
+import { number } from "yup";
 import { Master } from "./AppTypes";
 
 export const StaticMasterData: Master[] = [
@@ -21,4 +22,23 @@ export const SourcingFormInitialData = {
   dob: "",
   mobileno: "",
   productinterested: "",
+};
+
+export const ClientVisitFormInitialData = {
+  name: "",
+  dateOfVisit: "",
+  timeOfVisit: "",
+  mobileNo: "",
+  interestPrd: "",
+  loanAmt: "",
+  leadCategory: "",
+  reason: "",
+  remarks: "",
+  latCode: "",
+  longCode: "",
+  address1: "",
+  address2: "",
+  state: "",
+  city: "",
+  pincode: "",
 };

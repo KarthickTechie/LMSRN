@@ -77,10 +77,8 @@ const MasterPage = () => {
               color="#FF9C01"
               className="m-10"
             />
-
             <Text
-              className="
-        text-xl font-pregular text-white align-center leading-10"
+              className="text-xl font-pregular text-white align-center leading-10"
             >
               All Masters are downloaded successfully
             </Text>

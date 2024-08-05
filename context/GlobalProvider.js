@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import { getCurrentUser, getGpsStatus } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -8,6 +8,7 @@ export const GlobalProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [gpsData, setGpsStatusData] = useState("");
 
   useEffect(() => {
     getCurrentUser()
@@ -27,6 +28,10 @@ export const GlobalProvider = ({ children }) => {
       .finally(() => {
         setIsLoading(false);
       });
+
+    getGpsStatus().then((res) => {
+      setGpsStatusData(res);
+    });
   });
   return (
     <GlobalContext.Provider
@@ -37,6 +42,8 @@ export const GlobalProvider = ({ children }) => {
         setUser,
         isLoading,
         setIsLoading,
+        gpsData,
+        setGpsStatusData,
       }}
     >
       {children}
