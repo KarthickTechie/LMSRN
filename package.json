@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/drawer": "^6.7.0",
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.0.2",
@@ -32,6 +33,7 @@
     "expo-router": "^3.5.18",
     "expo-secure-store": "~13.0.2",
     "expo-splash-screen": "~0.27.5",
+    "expo-sqlite": "~14.0.4",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "^3.0.7",
     "expo-web-browser": "~13.0.3",
@@ -56,6 +58,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
     "@types/react-test-renderer": "^18.0.7",

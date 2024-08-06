@@ -1,11 +1,114 @@
 import { View, Text, Animated } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { Master, StaticMasterData } from "@/apptypes";
+import {
+  HeaderParams,
+  Master,
+  OrganizationMasterColumns,
+  StaticMasterData,
+} from "@/apptypes";
 import MasterCard from "@/components/MasterCard";
 import { FontAwesome } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useFetch } from "@/hooks/useFetch";
+import { DBSchemaConstants, Endpoints } from "@/constants";
+import * as ZonalMasterDataSource from "@/services/dbopsZonalMasters";
+import axios from "axios";
+import { deleteTableDataByTableNames } from "@/services";
+import { ref } from "yup";
+
+// eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
+  const { updatemaster } = useLocalSearchParams<Record<string, string>>(); // fetch all masters
+  /* static header value for lms app  */
+  const [zonelist, setZonalList] = useState([]);
+  const [branchList, setBranchList] = useState([]);
+
+  const headers: HeaderParams = {
+    username: "60011",
+    password: "516edd40eedbe8194bc0e743fe75c59b",
+  };
+
+  const getZonalData = async () => {
+    const response = await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/organisationsetup/`,
+      method: "GET",
+    });
+    setZonalList(response.data.zonalList);
+  };
+
+  const getBranchData = async (loginid: string) => {
+    const response = await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/${Endpoints.branchMaster}/${loginid}`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        userName: headers.username,
+        password: headers.password,
+      },
+    });
+    setBranchList(response.data.branchList);
+  };
+
+  const getLovData = async (refkey: string) => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/reference-data/${refkey}`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headers.username,
+        password: headers.password,
+      },
+    });
+  };
+
+  const getStatesData = async () => {
+    return await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/getStatesList/indian_states`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: headers.username,
+        password: headers.password,
+      },
+    });
+  };
+
+  useEffect(() => {
+    alert(`${updatemaster} type => ${typeof updatemaster}`);
+    if (updatemaster) {
+      // if updatemaster query param true , all the masterdata in tables will be deleted
+      // and fresh insert will happen
+      deleteTableDataByTableNames([
+        DBSchemaConstants.ORIG_ZONAL_MASTER,
+        DBSchemaConstants.ORIG_BRANCH_MASTER,
+        DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
+        DBSchemaConstants.ORIG_STATE_MASTERS,
+        DBSchemaConstants.ORIG_CITY_MASTERS,
+        DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
+        DBSchemaConstants.PRODUCT_SUB_CATEGORY,
+      ]);
+      try {
+        getZonalData();
+        getBranchData("60011");
+        console.log(zonelist.length);
+        console.log(branchList.length);
+      } catch (error) {
+        alert(`${error}`);
+      }
+    } else {
+      // if updatemaster query param false then no masterdata in tables
+      // and fresh insert will happen
+    }
+    // if orig_zonal
+    // getZonalData().then((response) => {
+    //   const data: Record<string, string | number | null>[] =
+    //     response.data["zonalList"];
+    //   data.forEach((val) => {
+    //     ZonalMasterDataSource.save(val);
+    //   });
+    // });
+  }, []);
   const opacAnimation = useRef(new Animated.Value(0)).current;
 
   const loadData = () => {
@@ -14,13 +117,14 @@ const MasterPage = () => {
       const res = mastersNotDownloaded.splice(0, 1);
       setMasterDownloaded([...mastersDownloaded, res[0]]);
       setMasterNotDownloaded([...mastersNotDownloaded]);
-      if (mastersNotDownloaded.length == 0) {
+      if (mastersNotDownloaded.length === 0) {
         Animated.timing(opacAnimation, {
           toValue: 1,
           useNativeDriver: true,
           duration: 2000,
           delay: 1000,
         }).start();
+
         setTimeout(() => {
           router.push("/home");
         }, 2000);

@@ -11,6 +11,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "components/CustomButton.jsx"
+    "components/CustomButton.jsx",
+    "app/index.tsx"
   ]
 }
