@@ -8,10 +8,12 @@ import {
   Lov,
 } from "./AppTypes";
 import {
+  CityMasterColumns,
   LovReferenceKey,
   OrganizationMasterColumns,
   ProductMasterColumns,
   SourcingFormInitialData,
+  StateMasterColumns,
   StaticDataColumns,
   StaticMasterData,
   SubProductColumns,
@@ -32,4 +34,6 @@ export {
   StaticDataColumns,
   LovReferenceKey,
   Lov,
+  StateMasterColumns,
+  CityMasterColumns,
 };

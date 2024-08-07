@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { DrawerActions } from "@react-navigation/native";
 import { router, useNavigation } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -7,12 +7,42 @@ import SubHeader from "@/components/subheader";
 import BannerTopComponent from "@/components/BannerTop";
 import Dashboard from "@/components/Dashboard";
 import { Ionicons } from "@expo/vector-icons";
+import { dbServices } from "@/services";
+import { DBSchemaConstants } from "@/constants";
 const Home = () => {
   const navigation = useNavigation();
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
+  const testTable = async () => {
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.ORIG_ZONAL_MASTER
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.ORIG_BRANCH_MASTER
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.ORIG_STATIC_DATA_MASTERS
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.ORIG_STATE_MASTERS
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.PRODUCT_MAIN_CATEGORY
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.PRODUCT_SUB_CATEGORY
+    );
+    await dbServices.getTotalRowsByTableName(
+      DBSchemaConstants.ORIG_CITY_MASTERS
+    );
+  };
+
+  useEffect(() => {
+    testTable();
+  });
 
   return (
     <View className="flex column">
@@ -31,7 +61,8 @@ const Home = () => {
           >
             <TouchableOpacity
               className=""
-              onPress={() => router.push("(leadtabs)/sourcing")}
+              // onPress={() => router.push("(leadtabs)/sourcing")}
+              onPress={testTable}
             >
               <Ionicons name="add" size={24} color="black" />
             </TouchableOpacity>

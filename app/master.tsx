@@ -13,25 +13,23 @@ import { FontAwesome } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { DBSchemaConstants, Endpoints } from "@/constants";
 import axios from "axios";
-import { deleteTableDataByTableNames } from "@/services";
-
+import {
+  dbopsBranchMasters,
+  dbopsMainProductsMasters,
+  dbopsStatesMasters,
+  dbopsStaticDataMasters,
+  dbopsSubProductsMasters,
+  dbServices,
+} from "@/services";
+import { dbopsZonalMasters } from "@/services";
 // eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
   const { updatemaster } = useLocalSearchParams<Record<string, string>>(); // fetch all masters
   /* static header value for lms app  */
-  const [zonelist, setZonalList] = useState([]);
-  const [branchList, setBranchList] = useState([]);
-  const [states, setStates] = useState();
-  const [mainProducts, setMainProducts] = useState<any>();
-  const [subProducts, setSubProducts] = useState<any>();
-  const [lovList, setLovList] = useState<Lov[]>([]);
   const masterData: Master[] = StaticMasterData;
-
   const [mastersDownloaded, setMasterDownloaded] = useState<Master[]>([]);
-
   const [mastersNotDownloaded, setMasterNotDownloaded] =
     useState<Master[]>(masterData);
-  const [isAllMastersLoaded, setIsAllMastersLoaded] = useState(false);
   const headers: HeaderParams = {
     username: "60011",
     password: "516edd40eedbe8194bc0e743fe75c59b",
@@ -43,6 +41,11 @@ const MasterPage = () => {
       method: "GET",
     });
     // setZonalList(response.data.zonalList);
+    response.data.zonalList.forEach(
+      (val: Record<string, string | number | null>) => {
+        dbopsZonalMasters.save(val);
+      }
+    );
     const temp = [...mastersNotDownloaded];
     temp[0].downloadStatus = true;
     setMasterNotDownloaded([...temp]);
@@ -58,7 +61,11 @@ const MasterPage = () => {
         password: headers.password,
       },
     });
-    // setBranchList(response.data.branchList);
+    response.data.branchList.forEach(
+      (val: Record<string, string | number | null>) => {
+        dbopsBranchMasters.save(val);
+      }
+    );
     const temp = [...mastersNotDownloaded];
     temp[1].downloadStatus = true;
     setMasterNotDownloaded([...temp]);
@@ -83,7 +90,9 @@ const MasterPage = () => {
           masterid: id,
         }));
         lovArray = [...lovArray, lovArrayWithMasterID];
-        //    setLovList(lovArray);
+        lovArray.forEach((val) => {
+          dbopsStaticDataMasters.save(val);
+        });
         const temp = [...mastersNotDownloaded];
         temp[4].downloadStatus = true;
         setMasterNotDownloaded([...temp]);
@@ -97,6 +106,17 @@ const MasterPage = () => {
       method: "GET",
     });
     //  setStates(response.data.response);
+    if (Array.isArray(response.data.response)) {
+      response.data.response.forEach(
+        (val: Record<string, string | number | null>) => {
+          dbopsStatesMasters.save(val);
+        }
+      );
+    } else {
+      console.error(
+        ` Type Error getStatesData : response.data.response is not an array `
+      );
+    }
     const temp = [...mastersNotDownloaded];
     temp[3].downloadStatus = true;
     setMasterNotDownloaded([...temp]);
@@ -107,11 +127,33 @@ const MasterPage = () => {
       url: `https://onlineucolps.in:450/lendperfect/web/getMainAndSubCategory`,
       method: "GET",
     });
-    if ("lpstpMainFacilitylist" in response) {
+    if ("lpstpMainFacilitylist" in response.data) {
+      const { lpstpMainFacilitylist } = response.data;
       //  setMainProducts(response.lpstpMainFacilitylist);
+      console.info(`lpstpMainFacilitylist`, lpstpMainFacilitylist);
+      if (Array.isArray(lpstpMainFacilitylist)) {
+        lpstpMainFacilitylist.forEach(
+          (val: Record<string, string | number | null>) => {
+            dbopsMainProductsMasters.save(val);
+          }
+        );
+      } else {
+        console.error(
+          ` Type Error getMainProducts : response.lpstpMainFacilitylist is not an array `
+        );
+      }
     }
-    if ("lpstpsubFacilitylist" in response) {
+    if ("lpstpsubFacilitylist" in response.data) {
       // setSubProducts(response.lpstpsubFacilitylist);
+
+      const data = response.data.lpstpsubFacilitylist;
+      if (Array.isArray(data)) {
+        data.forEach((val: Record<string, string | number | null>) => {
+          dbopsSubProductsMasters.save(val);
+        });
+      } else {
+        console.error(` Type Error ${Object.caller}: ${Array.isArray(data)} `);
+      }
     }
     const temp = [...mastersNotDownloaded];
     temp[2].downloadStatus = true;
@@ -122,26 +164,28 @@ const MasterPage = () => {
     if (updatemaster) {
       // if updatemaster query param true , all the masterdata in tables will be deleted
       // and fresh insert will happen
-      deleteTableDataByTableNames([
-        DBSchemaConstants.ORIG_ZONAL_MASTER,
-        DBSchemaConstants.ORIG_BRANCH_MASTER,
-        DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
-        DBSchemaConstants.ORIG_STATE_MASTERS,
-        DBSchemaConstants.ORIG_CITY_MASTERS,
-        DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
-        DBSchemaConstants.PRODUCT_SUB_CATEGORY,
-      ]).then(() => {
-        try {
-          getZonalData();
-          getBranchData("60011");
-          getMainProducts();
-          getStatesData();
-          getLovData();
-          loadData();
-        } catch (error) {
-          alert(`${error}`);
-        }
-      });
+      dbServices
+        .deleteTableDataByTableNames([
+          DBSchemaConstants.ORIG_ZONAL_MASTER,
+          DBSchemaConstants.ORIG_BRANCH_MASTER,
+          DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
+          DBSchemaConstants.ORIG_STATE_MASTERS,
+          DBSchemaConstants.ORIG_CITY_MASTERS,
+          DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
+          DBSchemaConstants.PRODUCT_SUB_CATEGORY,
+        ])
+        .then(() => {
+          try {
+            getZonalData();
+            getBranchData("60011");
+            getMainProducts();
+            getStatesData();
+            getLovData();
+            loadData();
+          } catch (error) {
+            alert(`${error}`);
+          }
+        });
     } else {
       // if updatemaster query param false then no masterdata in tables
       // and fresh insert will happen

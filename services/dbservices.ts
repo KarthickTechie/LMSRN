@@ -36,6 +36,20 @@ export const deleteTableDataByTableNames = async (tables: string[]) => {
 };
 
 /*
+@author          : karthick.d
+@since           : 08/07/2024
+@desc            : method returns no of rows in the given table
+@params          : table name 
+*/
+export const getTotalRowsByTableName = async (tableName: string) => {
+  const db = await prepareDB();
+  if (db) {
+    const result = await db.getFirstAsync(`SELECT COUNT(*) FROM ${tableName}`);
+    console.log(`table ${tableName}: ${JSON.stringify(result)}`);
+  }
+};
+
+/*
 
 column mapping 
 

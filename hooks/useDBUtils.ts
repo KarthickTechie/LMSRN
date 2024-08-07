@@ -18,7 +18,7 @@ import {
   StateMasterColumns,
 } from "@/apptypes/AppStaticData";
 import { DBSchemaConstants } from "@/constants";
-import { prepareDB } from "@/services";
+import { dbServices } from "@/services";
 import * as SQLite from "expo-sqlite";
 import { useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ export const useDBUtils = () => {
   const [db, setDb] = useState<SQLite.SQLiteDatabase>();
   const [usersList, setUsersList] = useState<TestUser[]>([]);
   const prepareSchema = async () => {
-    const db = await prepareDB();
+    const db = await dbServices.prepareDB();
     setDb(db);
   };
   useEffect(() => {
@@ -118,7 +118,7 @@ export const useDBUtils = () => {
     db: SQLite.SQLiteDatabase,
     tableConfig: TableConfig
   ) => {
-    const querystring = createQueryString(OrganizationMasterColumns);
+    const querystring = createQueryString(tableConfig.tableData);
     console.log(querystring);
 
     db.execAsync(`CREATE TABLE IF NOT EXISTS ${tableConfig.tableName}
