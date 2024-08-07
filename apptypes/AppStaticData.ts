@@ -5,7 +5,7 @@ export const StaticMasterData: Master[] = [
   { masterType: "Branch Master", downloadStatus: false },
   { masterType: "Products Master", downloadStatus: false },
   { masterType: "Geography Master", downloadStatus: false },
-  { masterType: "Vehicle Master", downloadStatus: false },
+  { masterType: "Static Data Master", downloadStatus: false },
 ];
 
 export const SourcingFormInitialData = {
@@ -60,3 +60,30 @@ export const CityMasterColumns: KeyValueString = {
   sgmCityName: "TEXT",
   sgmStateCode: "TEXT",
 };
+
+export const LovReferenceKey: Record<string, string | number>[] = [
+  { name: "lead_category", id: 1 },
+  { name: "otheriddf", id: 2 },
+  { name: "constitutiondf", id: 3 },
+  { name: "lead_title", id: 4 },
+  { name: "listed", id: 5 },
+  { name: "registerd", id: 6 },
+  { name: "emptype", id: 7 },
+  { name: "applicantbankingwithus", id: 8 },
+  { name: "guarantorisadded", id: 9 },
+  { name: "coapplicantisadded", id: 10 },
+  { name: "lead_source", id: 11 },
+  { name: "customer_type", id: 12 },
+  { name: "emp_gender", id: 13 },
+  { name: "employment_type", id: 14 },
+  { name: "common_yes_no", id: 15 },
+  { name: "change_status", id: 15 },
+  { name: "cust_type", id: 16 },
+  { name: "business_description", id: 17 },
+  { name: "app_yes_no", id: 18 },
+  { name: "task_status_schedular", id: 19 },
+  { name: "Task_Related_To", id: 20 },
+  { name: "priority", id: 21 },
+  { name: "report_type", id: 23 },
+  { name: "change_sub_status", id: 24 },
+];

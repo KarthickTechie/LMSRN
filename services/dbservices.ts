@@ -34,3 +34,35 @@ export const deleteTableDataByTableNames = async (tables: string[]) => {
     );
   }
 };
+
+/*
+
+column mapping 
+
+PRODUCT_MAIN_CATEGORY 
+
+  vertical: "TEXT", -> lsfBizVertical
+  facDesc: "TEXT" -> lsfFacDesc
+  facId: "TEXT", -> lsfFacId
+  facParentID: "TEXT", -> lsfFacParentId
+
+
+PRODUCT_SUB_CATEGORY
+
+  vertical: "TEXT", -> lsfBizVertical
+  facDesc: "TEXT" -> lsfFacDesc
+  facId: "TEXT", -> lsfFacId
+  facParentID: "TEXT", -> lsfFacParentId
+
+ORIG_STATIC_DATA_MASTERS
+
+  rdValueCode: "TEXT", -> rdValueCode
+  rdValueDescription: "TEXT", -> rdValueDescription
+  master_id: "INTEGER NOT NULL DEFAULT ''", -> masterid
+
+ORIG_STATE_MASTERS
+
+  sgmStateName: "TEXT", -> sgmStateName
+  sgmStateCode: "TEXT", -> sgmStateCode
+
+*/

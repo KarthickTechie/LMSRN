@@ -27,3 +27,9 @@ export interface TableConfig {
   pk: string;
   tableData: KeyValueString;
 }
+
+export interface Lov {
+  rdValueCode?: string;
+  rdValueDescription?: string;
+  masterid?: number;
+}

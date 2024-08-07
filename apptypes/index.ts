@@ -5,8 +5,10 @@ import {
   User,
   KeyValueString,
   TableConfig,
+  Lov,
 } from "./AppTypes";
 import {
+  LovReferenceKey,
   OrganizationMasterColumns,
   ProductMasterColumns,
   SourcingFormInitialData,
@@ -28,4 +30,6 @@ export {
   SubProductColumns,
   TableConfig,
   StaticDataColumns,
+  LovReferenceKey,
+  Lov,
 };
