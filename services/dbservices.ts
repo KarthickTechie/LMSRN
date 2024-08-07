@@ -34,3 +34,49 @@ export const deleteTableDataByTableNames = async (tables: string[]) => {
     );
   }
 };
+
+/*
+@author          : karthick.d
+@since           : 08/07/2024
+@desc            : method returns no of rows in the given table
+@params          : table name 
+*/
+export const getTotalRowsByTableName = async (tableName: string) => {
+  const db = await prepareDB();
+  if (db) {
+    const result = await db.getFirstAsync(`SELECT COUNT(*) FROM ${tableName}`);
+    console.log(`table ${tableName}: ${JSON.stringify(result)}`);
+  }
+};
+
+/*
+
+column mapping 
+
+PRODUCT_MAIN_CATEGORY 
+
+  vertical: "TEXT", -> lsfBizVertical
+  facDesc: "TEXT" -> lsfFacDesc
+  facId: "TEXT", -> lsfFacId
+  facParentID: "TEXT", -> lsfFacParentId
+
+
+PRODUCT_SUB_CATEGORY
+
+  vertical: "TEXT", -> lsfBizVertical
+  facDesc: "TEXT" -> lsfFacDesc
+  facId: "TEXT", -> lsfFacId
+  facParentID: "TEXT", -> lsfFacParentId
+
+ORIG_STATIC_DATA_MASTERS
+
+  rdValueCode: "TEXT", -> rdValueCode
+  rdValueDescription: "TEXT", -> rdValueDescription
+  master_id: "INTEGER NOT NULL DEFAULT ''", -> masterid
+
+ORIG_STATE_MASTERS
+
+  sgmStateName: "TEXT", -> sgmStateName
+  sgmStateCode: "TEXT", -> sgmStateCode
+
+*/

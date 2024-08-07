@@ -1,29 +1,35 @@
-import { View, Text, Animated } from "react-native";
+import { Text, Animated } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import {
   HeaderParams,
+  LovReferenceKey,
   Master,
-  OrganizationMasterColumns,
   StaticMasterData,
+  Lov,
 } from "@/apptypes";
 import MasterCard from "@/components/MasterCard";
 import { FontAwesome } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import { useFetch } from "@/hooks/useFetch";
 import { DBSchemaConstants, Endpoints } from "@/constants";
-import * as ZonalMasterDataSource from "@/services/dbopsZonalMasters";
 import axios from "axios";
-import { deleteTableDataByTableNames } from "@/services";
-import { ref } from "yup";
-
+import {
+  dbopsBranchMasters,
+  dbopsMainProductsMasters,
+  dbopsStatesMasters,
+  dbopsStaticDataMasters,
+  dbopsSubProductsMasters,
+  dbServices,
+} from "@/services";
+import { dbopsZonalMasters } from "@/services";
 // eslint-disable-next-line max-lines-per-function
 const MasterPage = () => {
   const { updatemaster } = useLocalSearchParams<Record<string, string>>(); // fetch all masters
   /* static header value for lms app  */
-  const [zonelist, setZonalList] = useState([]);
-  const [branchList, setBranchList] = useState([]);
-
+  const masterData: Master[] = StaticMasterData;
+  const [mastersDownloaded, setMasterDownloaded] = useState<Master[]>([]);
+  const [mastersNotDownloaded, setMasterNotDownloaded] =
+    useState<Master[]>(masterData);
   const headers: HeaderParams = {
     username: "60011",
     password: "516edd40eedbe8194bc0e743fe75c59b",
@@ -34,7 +40,15 @@ const MasterPage = () => {
       url: `https://onlineucolps.in:450/lendperfect/organisationsetup/`,
       method: "GET",
     });
-    setZonalList(response.data.zonalList);
+    // setZonalList(response.data.zonalList);
+    response.data.zonalList.forEach(
+      (val: Record<string, string | number | null>) => {
+        dbopsZonalMasters.save(val);
+      }
+    );
+    const temp = [...mastersNotDownloaded];
+    temp[0].downloadStatus = true;
+    setMasterNotDownloaded([...temp]);
   };
 
   const getBranchData = async (loginid: string) => {
@@ -47,55 +61,131 @@ const MasterPage = () => {
         password: headers.password,
       },
     });
-    setBranchList(response.data.branchList);
+    response.data.branchList.forEach(
+      (val: Record<string, string | number | null>) => {
+        dbopsBranchMasters.save(val);
+      }
+    );
+    const temp = [...mastersNotDownloaded];
+    temp[1].downloadStatus = true;
+    setMasterNotDownloaded([...temp]);
   };
 
-  const getLovData = async (refkey: string) => {
-    return await axios.request({
-      url: `https://onlineucolps.in:450/lendperfect/reference-data/${refkey}`,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        username: headers.username,
-        password: headers.password,
-      },
+  const getLovData = async () => {
+    let lovArray: Lov[] = [];
+    LovReferenceKey.forEach(async ({ name, id }) => {
+      const response = await axios.request({
+        url: `https://onlineucolps.in:450/lendperfect/${Endpoints.lovMaster}/${name}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          userName: headers.username,
+          password: headers.password,
+        },
+      });
+      const lovCollection = response.data?.refereceData;
+      if (lovCollection.length > 0) {
+        const lovArrayWithMasterID = lovCollection.map((lov: any) => ({
+          ...lov,
+          masterid: id,
+        }));
+        lovArray = [...lovArray, lovArrayWithMasterID];
+        lovArray.forEach((val) => {
+          dbopsStaticDataMasters.save(val);
+        });
+        const temp = [...mastersNotDownloaded];
+        temp[4].downloadStatus = true;
+        setMasterNotDownloaded([...temp]);
+      }
     });
   };
 
   const getStatesData = async () => {
-    return await axios.request({
+    const response = await axios.request({
       url: `https://onlineucolps.in:450/lendperfect/getStatesList/indian_states`,
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        username: headers.username,
-        password: headers.password,
-      },
     });
+    //  setStates(response.data.response);
+    if (Array.isArray(response.data.response)) {
+      response.data.response.forEach(
+        (val: Record<string, string | number | null>) => {
+          dbopsStatesMasters.save(val);
+        }
+      );
+    } else {
+      console.error(
+        ` Type Error getStatesData : response.data.response is not an array `
+      );
+    }
+    const temp = [...mastersNotDownloaded];
+    temp[3].downloadStatus = true;
+    setMasterNotDownloaded([...temp]);
+  };
+
+  const getMainProducts = async () => {
+    const response = await axios.request({
+      url: `https://onlineucolps.in:450/lendperfect/web/getMainAndSubCategory`,
+      method: "GET",
+    });
+    if ("lpstpMainFacilitylist" in response.data) {
+      const { lpstpMainFacilitylist } = response.data;
+      //  setMainProducts(response.lpstpMainFacilitylist);
+      console.info(`lpstpMainFacilitylist`, lpstpMainFacilitylist);
+      if (Array.isArray(lpstpMainFacilitylist)) {
+        lpstpMainFacilitylist.forEach(
+          (val: Record<string, string | number | null>) => {
+            dbopsMainProductsMasters.save(val);
+          }
+        );
+      } else {
+        console.error(
+          ` Type Error getMainProducts : response.lpstpMainFacilitylist is not an array `
+        );
+      }
+    }
+    if ("lpstpsubFacilitylist" in response.data) {
+      // setSubProducts(response.lpstpsubFacilitylist);
+
+      const data = response.data.lpstpsubFacilitylist;
+      if (Array.isArray(data)) {
+        data.forEach((val: Record<string, string | number | null>) => {
+          dbopsSubProductsMasters.save(val);
+        });
+      } else {
+        console.error(` Type Error ${Object.caller}: ${Array.isArray(data)} `);
+      }
+    }
+    const temp = [...mastersNotDownloaded];
+    temp[2].downloadStatus = true;
+    setMasterNotDownloaded([...temp]);
   };
 
   useEffect(() => {
-    alert(`${updatemaster} type => ${typeof updatemaster}`);
     if (updatemaster) {
       // if updatemaster query param true , all the masterdata in tables will be deleted
       // and fresh insert will happen
-      deleteTableDataByTableNames([
-        DBSchemaConstants.ORIG_ZONAL_MASTER,
-        DBSchemaConstants.ORIG_BRANCH_MASTER,
-        DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
-        DBSchemaConstants.ORIG_STATE_MASTERS,
-        DBSchemaConstants.ORIG_CITY_MASTERS,
-        DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
-        DBSchemaConstants.PRODUCT_SUB_CATEGORY,
-      ]);
-      try {
-        getZonalData();
-        getBranchData("60011");
-        console.log(zonelist.length);
-        console.log(branchList.length);
-      } catch (error) {
-        alert(`${error}`);
-      }
+      dbServices
+        .deleteTableDataByTableNames([
+          DBSchemaConstants.ORIG_ZONAL_MASTER,
+          DBSchemaConstants.ORIG_BRANCH_MASTER,
+          DBSchemaConstants.ORIG_STATIC_DATA_MASTERS,
+          DBSchemaConstants.ORIG_STATE_MASTERS,
+          DBSchemaConstants.ORIG_CITY_MASTERS,
+          DBSchemaConstants.PRODUCT_MAIN_CATEGORY,
+          DBSchemaConstants.PRODUCT_SUB_CATEGORY,
+        ])
+        .then(() => {
+          try {
+            getZonalData();
+            getBranchData("60011");
+            getMainProducts();
+            getStatesData();
+            getLovData();
+            loadData();
+          } catch (error) {
+            alert(`${error}`);
+          }
+        });
     } else {
       // if updatemaster query param false then no masterdata in tables
       // and fresh insert will happen
@@ -112,31 +202,24 @@ const MasterPage = () => {
   const opacAnimation = useRef(new Animated.Value(0)).current;
 
   const loadData = () => {
-    console.log(`${mastersDownloaded.length} ${StaticMasterData.length} `);
-    if (mastersNotDownloaded.length > 0) {
-      const res = mastersNotDownloaded.splice(0, 1);
-      setMasterDownloaded([...mastersDownloaded, res[0]]);
-      setMasterNotDownloaded([...mastersNotDownloaded]);
-      if (mastersNotDownloaded.length === 0) {
-        Animated.timing(opacAnimation, {
-          toValue: 1,
-          useNativeDriver: true,
-          duration: 2000,
-          delay: 1000,
-        }).start();
+    // if (mastersNotDownloaded.length > 0) {
+    // const res = mastersNotDownloaded.splice(0, 1);
+    // setMasterDownloaded([...mastersDownloaded, res[0]]);
+    // setMasterNotDownloaded([...mastersNotDownloaded]);
+    // setIsAllMastersLoaded(true);
+    // Animated.timing(opacAnimation, {
+    //   toValue: 1,
+    //   useNativeDriver: true,
+    //   duration: 2000,
+    //   delay: 1000,
+    // }).start();
 
-        setTimeout(() => {
-          router.push("/home");
-        }, 2000);
-      }
-    }
+    setTimeout(() => {
+      router.push("/home");
+    }, 2000);
+
+    //  }
   };
-  const masterData: Master[] = StaticMasterData;
-
-  const [mastersDownloaded, setMasterDownloaded] = useState<Master[]>([]);
-
-  const [mastersNotDownloaded, setMasterNotDownloaded] =
-    useState<Master[]>(masterData);
 
   return (
     <>
@@ -165,12 +248,12 @@ const MasterPage = () => {
                 key={index}
                 title={item.masterType}
                 opacity={0}
-                status={false}
+                status={item.downloadStatus}
                 index={index}
               />
             );
           })}
-        {mastersNotDownloaded.length == 0 && (
+        {/* {isAllMastersLoaded && (
           <Animated.View
             style={{ opacity: opacAnimation }}
             className="flex column w-[90vw] justify-center items-center border border-lime-100 m-5 p-2 rounded-lg"
@@ -187,7 +270,7 @@ const MasterPage = () => {
               All Masters are downloaded successfully
             </Text>
           </Animated.View>
-        )}
+        )} */}
       </Animated.View>
       <CustomButton
         textStyles=""
