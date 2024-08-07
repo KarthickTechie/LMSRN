@@ -1,3 +1,8 @@
+/**
+@author: Lathamani,
+date: 29-07-2024
+@description: This component is reusable. This is used for showing device gps, battery, network status. 
+*/
 import { View, Text } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import * as Battery from 'expo-battery';

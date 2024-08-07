@@ -1,9 +1,15 @@
+/**
+@author: Lathamani,
+date: 26-07-2024
+@description: API Service call functions. 
+*/
+
 import axios, { AxiosResponse } from "axios";
 import * as AppType from "@/apptypes/AppTypes";
 
-export let apiURL = AppType.APIURL.PRODURL;
+export const apiURL = AppType.APIURL.PRODURL;
 
-export let options = {
+const options = {
   Accept: "application/json",
   "Content-Type": "application/json",
   Username: "55655",

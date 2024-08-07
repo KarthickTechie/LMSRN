@@ -1,3 +1,9 @@
+/**
+@author: Lathamani,
+created date: 24-07-2024
+@description: This component is related to Attendance page.
+In this component we display Punch in and Punch out time. 
+*/
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment';
@@ -9,20 +15,8 @@ export type punchTypeValProps = {
 };
 
 const PunchTimeDateBlock = (props: punchTypeValProps) => {
-    // const [time, setTime] = useState(props.punTime ? props.punTime : new Date().toLocaleTimeString());
     const [todayDate] = useState(moment(new Date()).format('DD/MM/YYYY'));
     const [day] = useState(new Date().toLocaleDateString('en-US', { weekday: 'long' }));
-    // const [punchType, setPunch] = useState(props.punchType ? props.punchType : '');
-
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         let punchtime = new Date().toLocaleTimeString();
-    //         setTime(punchtime);
-    //     }, 1000);
-
-    //     return () => clearInterval(timer);
-    // }, [props.punTime]);
-
     return (
         <View className='w-full h-[100px] bg-gray-300'>
             <View className="flex flex-row item-center justify-center mt-2">
