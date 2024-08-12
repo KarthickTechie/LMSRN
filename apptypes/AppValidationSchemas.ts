@@ -35,8 +35,8 @@ const ClientVisitFormValidationSchema = yup.object().shape({
   leadCategory: yup.string().required("Lead Category is Required"),
   reason: yup.string().required("Reason is Required"),
   remarks: yup.string().required("Remarks is Required"),
-  latCode: yup.string().required("Latitute is Required"),
-  longCode: yup.string().required("Longitude is Required"),
+  latitude: yup.string().required("Latitute is Required"),
+  longitude: yup.string().required("Longitude is Required"),
   address1: yup.string().required("Address 1 is Required"),
   address2: yup.string(),
   state: yup.string().required("State is Required"),
@@ -48,4 +48,13 @@ const ClientVisitFormValidationSchema = yup.object().shape({
     .matches(/^[0-9]*/, "Enter valid loan amount."),
 });
 
-export { SourcingFormValidationSchema, ClientVisitFormValidationSchema };
+const DocumentValidationSchema = yup.object().shape({
+  applicantType: yup.string().required("Interest Product is Required"),
+  docClassification: yup.string().required("Interest Product is Required"),
+});
+
+export {
+  SourcingFormValidationSchema,
+  ClientVisitFormValidationSchema,
+  DocumentValidationSchema,
+};

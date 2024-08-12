@@ -1,3 +1,9 @@
+/**
+@author: Lathamani,
+date: 23-07-2024
+@description: Attendance page. 
+*/
+
 import { Alert, Dimensions, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import SubHeaderWithStatus from "@/components/subheaderWithStatus";
@@ -5,12 +11,14 @@ import PunchTimeDateBlock from "@/components/punchTimeDate";
 import MapView, { MapMarker } from "react-native-maps";
 import { router } from "expo-router";
 import * as AppType from "@/apptypes/AppTypes";
-import { getLocationCoordinates } from "@/lib/appwrite";
 import * as SecureStore from 'expo-secure-store';
 import moment from "moment";
 import LoadingControl from "@/components/loading";
 import { postMethod } from "@/lib/appAPIServices";
 import CustomButton from "@/components/CustomButton";
+import { Endpoints } from "@/constants";
+import { getLocationCoordinates } from "@/lib/geoLocationService";
+import { AlertMessage } from "@/apptypes/AppStaticMessage";
 
 const Attendance = () => {
   const initPunchData = { punchType: '', time: '', date: '' };
@@ -44,14 +52,12 @@ const Attendance = () => {
         SecureStore.deleteItemAsync('punchOut');
       }
       const locationVal = await getLocationCoordinates();
-      console.log(locationVal, 'console.log(locationVal.locationCode);');
       const { width, height } = Dimensions.get("window");
-      const ASPECT_RATIO = width / height;
       if (locationVal) {
         let latDelta = locationVal.locationCode.latitude - locationVal.locationCode.longitude;
-        let lngDelta = latDelta * ASPECT_RATIO;
+        let lngDelta = latDelta * (width / height);
         setAddressData(locationVal.address);
-        setLocationDelta({ latDelta: latDelta, lngDelta: lngDelta });
+        setLocationDelta({ latDelta, lngDelta });
         setLocation(locationVal.locationCode);
       }
     })();
@@ -81,16 +87,23 @@ const Attendance = () => {
         lnZip: addressData.pincode ? addressData.pincode : '',
         lnCountry: addressData.country ? addressData.country : '',
       };
-      const resp = await postMethod(AppType.APIClassName.userAttendance, AppType.APIMethods.saveAttendance, req);
-      console.log(resp, 'ksjdklsjdkjs');
+      const resp = await postMethod(Endpoints.userAttendance, req);
       if (resp.code == 200) {
         if (val == 'in') {
-          let punIn = { punchType: AppType.AttendancePunch.PUNCHIN, time: new Date().toLocaleTimeString(), date: moment(new Date()).format('DD/MM/YY') }
+          let punIn = {
+            punchType: AppType.AttendancePunch.PUNCHIN,
+            time: new Date().toLocaleTimeString(),
+            date: moment(new Date()).format('DD/MM/YY')
+          }
           setPunchInDisable(true);
           setPunchInType(punIn);
           SecureStore.setItemAsync('punchIn', JSON.stringify(punIn));
         } else {
-          let punOut = { punchType: AppType.AttendancePunch.PUNCHOUT, time: new Date().toLocaleTimeString(), date: moment(new Date()).format('DD/MM/YY') }
+          let punOut = {
+            punchType: AppType.AttendancePunch.PUNCHOUT,
+            time: new Date().toLocaleTimeString(),
+            date: moment(new Date()).format('DD/MM/YY')
+          }
           setPunchOutDisable(true);
           setPunchOutType(punOut);
           SecureStore.setItemAsync('punchOut', JSON.stringify(punOut));
@@ -99,7 +112,7 @@ const Attendance = () => {
         Alert.alert(resp.status);
       } else {
         setIsLoading(false);
-        Alert.alert(`Response Failed! ${resp.status}`);
+        Alert.alert(`${AlertMessage.ResponseFailed}. ${resp.status}`);
       }
     } catch (err) {
       setIsLoading(false);
@@ -142,47 +155,27 @@ const Attendance = () => {
         </View>
         <View className="flex flex-col absolute justify-center w-[100%] items-center bottom-[159px]">
           <View className="flex flex-row w-[100%] justify-between items-center my-4 px-8">
-            {/* <Button
-              color="#ff8c00"
-              title={AppType.AttendancePunch.PUNCHIN}
-              disabled={punchInDisable}
-              onPress={() => attendanceSubmit('in')}
-            />
-            <Button
-              color="#ff8c00"
-              title={AppType.AttendancePunch.PUNCHOUT}
-              disabled={punchOutDisable}
-              onPress={() => attendanceSubmit('out')}
-            /> */}
             <CustomButton
               title={AppType.AttendancePunch.PUNCHIN}
               handlePress={() => attendanceSubmit('in')}
-              containerStyles="w-[40%] mt-2 min-h-[50px]"
-              textStyles="text-base" isLoading={punchInDisable} />
+              containerStyles="w-[40%] mt-2 min-h-[48px] rounded-sm bg-blue-500"
+              textStyles="text-base text-white" isLoading={punchInDisable} />
 
             <CustomButton
               title={AppType.AttendancePunch.PUNCHOUT}
               handlePress={() => attendanceSubmit('out')}
-              containerStyles="w-[40%] mt-2 min-h-[50px]"
-              textStyles="text-base" isLoading={punchOutDisable}
+              containerStyles="w-[40%] mt-2 min-h-[48px] rounded-sm bg-blue-500"
+              textStyles="text-base text-white" isLoading={punchOutDisable}
             />
-
           </View>
           <View className="w-full">
-            {/* <Button
-              color="#ff8c00"
-              title={AppType.AppButtons.BACK}
-              onPress={() => router.push('home')}
-            /> */}
             <CustomButton
               title={AppType.AppButtons.BACK}
               handlePress={() => router.push('home')}
-              containerStyles="w-full mt-1 min-h-[52px]"
+              containerStyles="w-full mt-0.5 min-h-[50px] rounded-sm"
               textStyles={''} isLoading={false} />
-
           </View>
         </View>
-
       </View>
     </>
   );

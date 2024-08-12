@@ -44,9 +44,9 @@ const SubHeaderWithStatus = () => {
   return (
     <View className="flex w-[100vw] h-[30px] bg-navy justify-center items-center">
       <View className="flex flex-row">
-        <Text className="w-[33%] text-center">GPS : {contextData.gpsData} </Text>
-        <Text className="w-[33%] text-center">Internet : {networkData ? (networkData.isConnected ? 'ON' : 'OFF') : ''}</Text>
-        <Text className="w-[33%] text-center">Battery : {batteryLevel !== null ? (batteryLevel * 100).toFixed(2) : ''}%</Text>
+        <Text className="w-[33%] text-center text-white">GPS : {contextData.gpsData} </Text>
+        <Text className="w-[33%] text-center text-white">Internet : {networkData ? (networkData.isConnected ? 'ON' : 'OFF') : ''}</Text>
+        <Text className="w-[33%] text-center text-white">Battery : {batteryLevel !== null ? (batteryLevel * 100).toFixed(2) : ''}%</Text>
       </View>
 
     </View>

@@ -20,6 +20,9 @@ export type StyledDropdownProps = {
   fieldsAlignStyle?: string;
   labeledAlignStyle?: string;
   fieldsGrpStyle?: string;
+  dropdownData?: any;
+  dropLableProperty?: string;
+  dropValueProperty?: any;
 };
 
 const StyledDropdown = ({
@@ -31,6 +34,9 @@ const StyledDropdown = ({
   fieldsAlignStyle,
   labeledAlignStyle,
   fieldsGrpStyle,
+  dropdownData,
+  dropLableProperty,
+  dropValueProperty
 }: StyledDropdownProps) => {
   return (
     <View>
@@ -51,20 +57,16 @@ const StyledDropdown = ({
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={data}
+          data={dropdownData ? dropdownData : data}
           search
           maxHeight={700}
-          labelField="label"
-          valueField="value"
+          labelField={dropLableProperty ? dropLableProperty : ''}
+          valueField={dropValueProperty}
           placeholder={placeholder}
           searchPlaceholder="Search..."
           value={formikProps.values[formikkey]}
           onChange={(item) => {
-            formikProps.setFieldValue(formikkey, item.value);
-            console.log(`value => ${JSON.stringify(formikProps)}
-                touched => ${formikProps.touched[formikkey]}
-                error => ${formikProps.errors[formikkey]}
-                `);
+            formikProps.setFieldValue(formikkey, item[dropValueProperty]);
           }}
         />
       </View>

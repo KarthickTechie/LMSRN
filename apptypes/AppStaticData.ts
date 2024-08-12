@@ -34,8 +34,8 @@ export const ClientVisitFormInitialData = {
   leadCategory: "",
   reason: "",
   remarks: "",
-  latCode: "",
-  longCode: "",
+  latitude: "",
+  longitude: "",
   address1: "",
   address2: "",
   state: "",
@@ -106,3 +106,8 @@ export const LovReferenceKey: Record<string, string | number>[] = [
   { name: "report_type", id: 23 },
   { name: "change_sub_status", id: 24 },
 ];
+
+export const DocumentInitValues = {
+  applicantType: "",
+  docClassification: "",
+};

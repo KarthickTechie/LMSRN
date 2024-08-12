@@ -8,16 +8,6 @@ export interface Master {
   downloadStatus: boolean;
 }
 
-export enum APIMethods {
-  saveAttendance = "saveAttendanceDetails",
-  saveClientVisit = "save-clientvisit-detail",
-}
-
-export enum APIClassName {
-  userAttendance = "userAttendanceDetails",
-  leadManegment = "lead-management",
-}
-
 export enum APIURL {
   PRODURL = "https://onlineucolps.in:450/lendperfect",
 }
@@ -60,8 +50,8 @@ export interface ClientVisitFormData {
   leadCategory: string;
   reason: string;
   remarks: string;
-  latCode: string;
-  longCode: string;
+  latitude: string;
+  longitude: string;
   address1: string | null;
   address2: string | null;
   state: string | null;
@@ -133,4 +123,12 @@ export interface Lov {
   rdValueCode?: string;
   rdValueDescription?: string;
   masterid?: number;
+}
+
+export enum ResponseStatusCode {
+  STATUSOK = "200 OK",
+}
+
+export enum StaticDataMasterId {
+  LeadCategory = 1,
 }

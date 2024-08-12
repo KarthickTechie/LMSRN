@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser, getGpsStatus } from "../lib/appwrite";
+import { getCurrentUser } from "../lib/appwrite";
+import { getGpsStatus } from "@/lib/geoLocationService";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);

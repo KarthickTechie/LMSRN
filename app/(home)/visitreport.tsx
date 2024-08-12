@@ -1,8 +1,13 @@
+/**
+@author: Lathamani,
+date: 24-07-2024
+@description: Client Visit report page. 
+*/
+
 import {
   View,
   ScrollView,
   KeyboardAvoidingView,
-  Button,
   StyleSheet,
   Alert,
   Text,
@@ -15,11 +20,14 @@ import { ClientVisitFormInitialData } from "@/apptypes/AppStaticData";
 import { ClientVisitFormValidationSchema } from "@/apptypes/AppValidationSchemas";
 import StyledTextAreaInput from "@/components/formcontrols/styledTextAreaInput";
 import { router } from "expo-router";
-import { getLocationCoordinates } from "@/lib/appwrite";
 import * as AppType from "@/apptypes/AppTypes";
 import moment from "moment";
 import LoadingControl from "@/components/loading";
 import { postMethod } from "@/lib/appAPIServices";
+import { dbopsMainProductsMasters, dbopsStaticDataMasters } from "@/services";
+import { Endpoints } from "@/constants";
+import { getLocationCoordinates } from "@/lib/geoLocationService";
+import { AlertMessage } from "@/apptypes/AppStaticMessage";
 
 const validationSchema = ClientVisitFormValidationSchema;
 
@@ -27,6 +35,8 @@ const VisitReport = () => {
   const [initialFormData, setInitialFormData] =
     useState<AppType.ClientVisitFormData>(ClientVisitFormInitialData);
   const [isLoading, setIsLoading] = useState(false);
+  const [loanProdList, setLoanProdList] = useState<AppType.KeyValueString[]>([]);
+  const [leadCategoryList, setLeadCategoryList] = useState<AppType.KeyValueString[]>([]);
 
   useEffect(() => {
     const fectLocation = async () => {
@@ -38,19 +48,37 @@ const VisitReport = () => {
           ...initialFormData,
           dateOfVisit: dateVisit,
           timeOfVisit: timeVisit,
-          latCode: locationVal.locationCode.latitude.toString(),
-          longCode: locationVal.locationCode.longitude.toString(),
-          address1: locationVal.address.address1,
-          address2: locationVal.address.address2,
-          state: locationVal.address.state,
-          city: locationVal.address.city,
-          pincode: locationVal.address.pincode,
+          latitude: locationVal.locationCode.latitude.toString(),
+          longitude: locationVal.locationCode.longitude.toString(),
+          ...locationVal.address
         };
         setInitialFormData(setInitData);
       }
     };
     fectLocation();
+    getLoanProductData();
+    getLeadCategory();
   }, []);
+
+  const getLoanProductData = async () => {
+    try {
+      const loanProducts = await dbopsMainProductsMasters.findAll();
+      if (loanProducts) {
+        setLoanProdList(loanProducts);
+      }
+    } catch (err) {
+      Alert.alert(JSON.stringify(err));
+    }
+  }
+
+  const getLeadCategory = async () => {
+    try {
+      const leadCategory = await dbopsStaticDataMasters.findBasedOnMasterId(AppType.StaticDataMasterId.LeadCategory);
+      setLeadCategoryList(leadCategory);
+    } catch (err) {
+      Alert.alert(JSON.stringify(err));
+    }
+  }
 
   const submitClientForm = async (values: FormikValues, action: FormikHelpers<AppType.ClientVisitFormData>) => {
     try {
@@ -80,19 +108,17 @@ const VisitReport = () => {
         cvdModifiedOn: "",
       };
       let resp = await postMethod(
-        AppType.APIClassName.leadManegment,
-        `${AppType.APIMethods.saveClientVisit}/${userId}`,
+        `${Endpoints.saveClientVisit}/${userId}`,
         reqBody
       );
-      console.log("fjkdjs", resp);
-      if (resp.status == "200 OK") {
+      if (resp.status == AppType.ResponseStatusCode.STATUSOK) {
         setIsLoading(false);
         action.resetForm();
         action.setSubmitting(true);
-        Alert.alert('Client Visit Details Submitted Successfully.');
+        Alert.alert(AlertMessage.ClientVisitSubmitted);
       } else {
         setIsLoading(false);
-        Alert.alert('Response Failed');
+        Alert.alert(AlertMessage.ResponseFailed);
       }
     } catch (err) {
       setIsLoading(false);
@@ -160,6 +186,9 @@ const VisitReport = () => {
                   placeholder="Select Product"
                   title="Interest Product"
                   mandatory={true}
+                  dropdownData={loanProdList}
+                  dropLableProperty="facDesc"
+                  dropValueProperty="facId"
                   formikProps={formikProps}
                   formikkey="interestPrd"
                   fieldsGrpStyle="flex flex-row items-center"
@@ -180,6 +209,9 @@ const VisitReport = () => {
                   placeholder="Select Lead Category"
                   title="Lead Category"
                   mandatory={true}
+                  dropdownData={leadCategoryList}
+                  dropLableProperty="rdValueDescription"
+                  dropValueProperty="rdValueCode"
                   formikProps={formikProps}
                   formikkey="leadCategory"
                   fieldsGrpStyle="flex flex-row items-center"
@@ -212,7 +244,7 @@ const VisitReport = () => {
                 <Styledtextinput
                   label="Latitude"
                   formikProps={formikProps}
-                  formikkey="latCode"
+                  formikkey="latitude"
                   editable={false}
                   placeholder="Fetch Location"
                   mandatory={true}
@@ -224,7 +256,7 @@ const VisitReport = () => {
                 <Styledtextinput
                   label="Longitude"
                   formikProps={formikProps}
-                  formikkey="longCode"
+                  formikkey="longitude"
                   editable={false}
                   placeholder="Fetch Location"
                   mandatory={true}
@@ -295,23 +327,16 @@ const VisitReport = () => {
 
                 <View className="flex flex-row mt-5 justify-center">
                   <View className="mx-2">
-                    {/* <Button title="Submit" color="orange" onPress={formikProps.handleSubmit} /> */}
                     <TouchableOpacity className="bg-amber-500 rounded py-2 px-4 text-light" onPress={formikProps.handleSubmit}>
-                      <Text className="text-base font-medium">Submit</Text>
+                      <Text className="text-base font-medium">{AppType.AppButtons.SUBMIT}</Text>
                     </TouchableOpacity>
                   </View>
                   <View className="mx-2">
-                    {/* <Button
-                      title="New Visit"
-                      onPress={() => router.push("home")}
-                    /> */}
-
                     <TouchableOpacity className="bg-blue-500 rounded py-2 px-4 text-light" onPress={() => router.push("home")}>
-                      <Text className="text-base font-medium text-white">New Visit</Text>
+                      <Text className="text-base font-medium text-white">{AppType.AppButtons.NEXT}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                {/* <Text>{JSON.stringify(formikProps)}</Text> */}
               </>
             )}
           </Formik>

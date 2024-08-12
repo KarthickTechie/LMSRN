@@ -16,18 +16,24 @@ const options = {
   Password: "laps@1234",
 };
 
-export const postMethod = async (
-  apiClassName: string,
-  apiMethod: string,
-  reqBody: any
-) => {
+export const postMethod = async (apiMethod: string, reqBody: any) => {
   try {
-    const { data } = await axios.post(
-      `${apiURL}/${apiClassName}/${apiMethod}`,
-      reqBody,
-      { headers: options }
-    );
-    console.log(data, "response");
+    const { data } = await axios.post(`${apiURL}/${apiMethod}`, reqBody, {
+      headers: options,
+    });
+    console.info(data, "response");
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getAPIMethod = async (apiMethod: string) => {
+  try {
+    const { data } = await axios.get(`${apiURL}/${apiMethod}`, {
+      headers: options,
+    });
+    console.info(data, "response");
     return data;
   } catch (error) {
     return error;
