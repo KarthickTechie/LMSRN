@@ -24,7 +24,7 @@
       "package": "com.sysarc.lms",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyD6dBKMTE52g9AwNHYxOQ9GejJ8x8-YrhI"
+          "apiKey": ""
         }
       }
     },
@@ -41,7 +41,20 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

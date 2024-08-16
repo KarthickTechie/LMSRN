@@ -24,7 +24,8 @@ follow along the video tutorial and create your own app in appwright
 
 https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.users.ALL&client_id={}&response_type=code&access_type=offline&redirect_uri=com.sysarc.lms://
 
-installed by me
+** installed by Latha **
+
 npm install moment --save
 
 npx expo install react-native-maps
@@ -37,3 +38,12 @@ npx expo install expo-battery
 
 store values in device storage
 npm install @react-native-async-storage/async-storage
+
+camera
+npx expo install expo-camera
+
+npx expo install expo-image-picker
+
+npm install react-native-reanimated@2.9.1
+npm install react-native-reanimated : "~3.10.1
+npm install reanimated-bottom-sheet
