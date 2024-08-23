@@ -89,8 +89,8 @@ const MasterPage = () => {
           ...lov,
           masterid: id,
         }));
-        lovArray = [...lovArray, lovArrayWithMasterID];
-        lovArray.forEach((val) => {
+        // lovArray = [...lovArray, lovArrayWithMasterID];
+        lovArrayWithMasterID.forEach((val: Lov) => {
           dbopsStaticDataMasters.save(val);
         });
         const temp = [...mastersNotDownloaded];
@@ -131,6 +131,7 @@ const MasterPage = () => {
       const { lpstpMainFacilitylist } = response.data;
       //  setMainProducts(response.lpstpMainFacilitylist);
       console.info(`lpstpMainFacilitylist`, lpstpMainFacilitylist);
+
       if (Array.isArray(lpstpMainFacilitylist)) {
         lpstpMainFacilitylist.forEach(
           (val: Record<string, string | number | null>) => {
@@ -145,7 +146,6 @@ const MasterPage = () => {
     }
     if ("lpstpsubFacilitylist" in response.data) {
       // setSubProducts(response.lpstpsubFacilitylist);
-
       const data = response.data.lpstpsubFacilitylist;
       if (Array.isArray(data)) {
         data.forEach((val: Record<string, string | number | null>) => {
@@ -264,10 +264,8 @@ const MasterPage = () => {
               color="#FF9C01"
               className="m-10"
             />
-
             <Text
-              className="
-        text-xl font-pregular text-white align-center leading-10"
+              className="text-xl font-pregular text-white align-center leading-10"
             >
               All Masters are downloaded successfully
             </Text>

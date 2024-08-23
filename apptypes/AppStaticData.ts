@@ -1,3 +1,4 @@
+import { number } from "yup";
 import { KeyValueString, Master } from "./AppTypes";
 
 export const StaticMasterData: Master[] = [
@@ -23,6 +24,24 @@ export const SourcingFormInitialData = {
   productinterested: "",
 };
 
+export const ClientVisitFormInitialData = {
+  name: "",
+  dateOfVisit: "",
+  timeOfVisit: "",
+  mobileNo: "",
+  interestPrd: "",
+  loanAmt: "",
+  leadCategory: "",
+  reason: "",
+  remarks: "",
+  latitude: "",
+  longitude: "",
+  address1: "",
+  address2: "",
+  state: "",
+  city: "",
+  pincode: "",
+};
 export const OrganizationMasterColumns: KeyValueString = {
   orgCode: "TEXT",
   orgId: "TEXT",
@@ -87,3 +106,8 @@ export const LovReferenceKey: Record<string, string | number>[] = [
   { name: "report_type", id: 23 },
   { name: "change_sub_status", id: 24 },
 ];
+
+export const DocumentInitValues = {
+  applicantType: "",
+  docClassification: "",
+};
